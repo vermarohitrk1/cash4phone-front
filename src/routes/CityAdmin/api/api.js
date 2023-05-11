@@ -9,7 +9,7 @@ dotenv.config();
 // export const logoutapp   = "http://localhost:5000/cityadmin/logout";
 
 // Prod
-export const cityAdmin   = 'https://backend.cashforphone.in/cityadmin';
+export const cityAdmin   = process.env.REACT_APP_API_URL+'/cityadmin';
 export const sendOTP     = process.env.REACT_APP_API_URL+"/cityadmin/sendOTP";
 export const verifyOTP   = process.env.REACT_APP_API_URL+"/cityadmin/verifyOTP";
 export const refresh     = process.env.REACT_APP_API_URL+"/cityadmin/refresh";
