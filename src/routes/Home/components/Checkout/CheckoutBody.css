@@ -1,0 +1,79 @@
+.mainContainer {
+    padding: 4% 12%;
+    margin-top: 32px;
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    /* align-items: center; */
+}
+
+.orderPreview {
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 70px;
+    width: 50%;
+    background-color: #FAEBD7;
+    width: 580px;
+    height: 670px;
+}
+
+.container1 {
+    display: flex;
+}
+
+.phoneImage > img {
+    width: 40%;
+}
+
+.addressPreview {
+    padding: 20px;
+    width: 50%;
+    background-color: #FAEBD7;
+    width: 580px;
+    height: 670px;
+
+}
+.addressPreview > h3 {
+    font-weight: 600;
+}
+
+.productTitle {
+    font-size: 24px;
+    font-weight: 600;
+    font-family: 'Source Sans Pro', sans-serif;
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+.phoneInfo {
+    /* display: flex;
+    justify-content: space-between; */
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.productDescription {
+    font-size: 15px;
+    color: rgba(0,0,0,0.6);
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+.total {
+    padding-top: 10px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.paymentCard {
+    padding-top: 20px;
+}
+
+.orderComplete {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FAEBD7;
+    width: 1160px;
+    height: 670px;
+}

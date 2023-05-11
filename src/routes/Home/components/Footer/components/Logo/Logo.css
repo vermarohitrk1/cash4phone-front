@@ -1,0 +1,11 @@
+.logo {
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-about {
+    margin-top: 20px;
+    width: 300px;
+    /* font-weight: bold; */
+    color: black;
+}

@@ -1,0 +1,37 @@
+.label {
+  margin-top: 0.8rem;
+  margin-bottom: 0.8rem;
+  font-weight: 600;
+}
+
+.content {
+  padding-left: 0.8rem;
+  padding-right: 0.8rem;
+}
+
+.input-group {
+  margin-bottom: 2rem;
+}
+.label-range {
+  margin-top: 0.8rem;
+  margin-bottom: 2.5rem;
+  font-weight: 600;
+
+}
+
+.filter_panel_head{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+  
+.filter_panel_head p {
+  width: 50%;
+}
+
+.labelP {
+  color: #ff7f4d;
+  text-decoration: none;
+  margin-top: 5%;
+
+}
