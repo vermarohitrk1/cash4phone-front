@@ -13,12 +13,17 @@ const styles = StyleSheet.create({
         color: 'white'
     },
     sno: {
-        width: '5%',
+        width: '3%',
         borderRightColor: borderColor,
         borderRightWidth: 1,
     },
     imei_num: {
-        width: '21%',
+        width: '18%',
+        borderRightColor: borderColor,
+        borderRightWidth: 1,
+    },
+    order_num: {
+        width: '10%',
         borderRightColor: borderColor,
         borderRightWidth: 1,
     },
@@ -33,12 +38,17 @@ const styles = StyleSheet.create({
         borderRightWidth: 1,
     },
     model: {
-        width: '53%',
+        width: '43%',
+        borderRightColor: borderColor,
+        borderRightWidth: 1,
+    },
+    hsn: {
+        width: '6%',
         borderRightColor: borderColor,
         borderRightWidth: 1,
     },
     amount: {
-        width: '10%',
+        width: '9%',
     },
    
   });
@@ -49,9 +59,11 @@ const InvoiceTableBlankSpace = ({rowsCount}) => {
         <View style={styles.row} key={`BR${i}`}>
             <Text style={styles.sno}>-</Text>
             <Text style={styles.imei_num}>-</Text>
+            <Text style={styles.order_num}>-</Text>
             {/* <Text style={styles.barcode}>-</Text> */}
             <Text style={styles.brand}>-</Text>
             <Text style={styles.model}>-</Text>
+            <Text style={styles.hsn}>-</Text>
             <Text style={styles.amount}>-</Text>
         </View>
     )

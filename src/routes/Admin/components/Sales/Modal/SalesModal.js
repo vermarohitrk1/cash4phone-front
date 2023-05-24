@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal } from 'antd';
-import SalesForm from './Form/SalesForm';
+import {SalesForm, SalesEditForm} from './Form/SalesForm';
 
 const Sales_modal = (props) => {
   
@@ -16,6 +16,9 @@ const Sales_modal = (props) => {
     >
       {props.type === "sales" && 
         <SalesForm setopenModal={props.setopenModal}/>
+      }
+      {props.type === "sales_edit" && 
+        <SalesEditForm setOpenModal={props.setopenModal} row={props.row}/>
       }
     </Modal>
   );

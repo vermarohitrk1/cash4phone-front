@@ -26,14 +26,18 @@ const styles = StyleSheet.create({
     } else {
       roi = true;
     }
-
+    const items = invoice.items.map(item => ({
+      ...item,
+      hsn: invoice.hsn
+    }));
+    
     return (
     <View style={styles.tableContainer}>
-        <InvoiceTableHeader h1={"no"} h2={"IMEI Number"} h3={"Brand"} h4={"Model"} h5={"Amount"} />
-        <InvoiceTableRow items={invoice.items} />
+        <InvoiceTableHeader h1={"no"} h2={"IMEI Number"} h7={"Order No."} h3={"Brand"} h4={"Model"} h6={"HSN"} h5={"Amount"} />
+        <InvoiceTableRow items={items} />
         <InvoiceTableBlankSpace rowsCount={1} />
         <Total text={"Total (inclusive of GST)"} value={invoice.selling_amount}/>
-        <InvoiceTableFooter text={"Shorts and Excesses"} value={0}/>
+        {/*<InvoiceTableFooter text={"Shorts and Excesses"} value={0}/>*/}
         <InvoiceTableFooter text={"Discount Applied"} value={invoice.discount}/>
         <Total text={"Total (after Discount)"} value={invoice.selling_amount - invoice.discount}/>
         <InvoiceTableFooter text={"Amount in words (inclusive GST)"} value={invoice.payment_words}/>

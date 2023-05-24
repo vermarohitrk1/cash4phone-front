@@ -11,14 +11,21 @@ const styles = StyleSheet.create({
         fontSize: 10
     },
     sno: {
-        width: '5%',
+        width: '3%',
         borderRightColor: borderColor,
         borderRightWidth: 1,
         textAlign: 'center',
         // paddingRight: 8,
     },
     imei_num: {
-        width: '21%',
+        width: '18%',
+        textAlign: 'center',
+        borderRightColor: borderColor,
+        borderRightWidth: 1,
+        // paddingLeft: 8,
+    },
+    order_num: {
+        width: '10%',
         textAlign: 'center',
         borderRightColor: borderColor,
         borderRightWidth: 1,
@@ -39,14 +46,21 @@ const styles = StyleSheet.create({
         // paddingRight: 8,
     },
     model: {
-        width: '53%',
+        width: '43%',
+        borderRightColor: borderColor,
+        borderRightWidth: 1,
+        textAlign: 'center',
+        // paddingRight: 8,
+    },
+    hsn: {
+        width: '6%',
         borderRightColor: borderColor,
         borderRightWidth: 1,
         textAlign: 'center',
         // paddingRight: 8,
     },
     amount: {
-        width: '10%',
+        width: '9%',
         textAlign: 'center',
         // paddingRight: 8,
     },
@@ -57,12 +71,15 @@ const InvoiceTableRow = ({items}) => {
     let i = 1;
     items.map(item => {item.sno = i; i++})
     const rows = items.map( item => 
+        
         <View style={styles.row} key={item.sno.toString()}>
             <Text style={styles.sno}>{item.sno}</Text>
             <Text style={styles.imei_num}>{item.imei_num}</Text>
+            <Text style={styles.order_num}>{item.order_num}</Text>
             {/* <Text style={styles.barcode}>{item.barcode}</Text> */}
             <Text style={styles.brand}>{item.brand}</Text>
             <Text style={styles.model}>{item.model}</Text>
+            <Text style={styles.hsn}>{item.hsn}</Text>
             <Text style={styles.amount}>{item.selling_price}</Text>
         </View>
     )

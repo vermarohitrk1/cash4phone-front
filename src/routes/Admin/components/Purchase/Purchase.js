@@ -179,7 +179,7 @@ export default function Purchase() {
        <Upload {...props}>
             <Button icon={<UploadOutlined />}>Upload File</Button>
        </Upload>
-       <Search placeholder="enter imei number" onSearch={onSearch} enterButton />
+       <Search placeholder="Search" onSearch={onSearch} enterButton />
       </Space>
 
       {openModal && 

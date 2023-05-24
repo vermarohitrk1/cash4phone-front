@@ -14,7 +14,9 @@ export default function Sales() {
   // const [error, setError] = useState(null);
   // const [isLoaded, setIsLoaded] = useState(false);
   const [openModal, setopenModal] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
   const [items, setItems] = useState([]);
+  const [row, setRow] = useState({});
 
   const [soldItems, setSoldItems] = useState([]);
   const [openinvoice, setOpenInvoice] = useState(false);
@@ -43,8 +45,10 @@ export default function Sales() {
           element['key'] = element.invoice_number;
           element.sale_date = element.sale_date.slice(0, 10);
           if(element.sale_date <= '2022-03-31') {
+            element.invoice_number_unique = element.invoice_number;
             element.invoice_number = "KNOV/2022-23/" + element.invoice_number;
           } else {
+            element.invoice_number_unique = element.invoice_number;
             element.invoice_number = "KNOV/2023-24/" + element.invoice_number;
 
           }
@@ -82,6 +86,11 @@ export default function Sales() {
     })
   }
 
+  function handleModify(rowValues) {
+    setOpenEditModal(true);
+    setRow(rowValues);
+  }
+  
 const columns = [
   {
     title: 'Sale Date',
@@ -91,7 +100,7 @@ const columns = [
   {
     title: 'Invoice Number',
     dataIndex: 'invoice_number',
-    key: 'invoice_number',
+    key: 'invoice_number'
   },
   // {
   //   title: 'Order Number',
@@ -182,6 +191,19 @@ const columns = [
       return <a onClick={() => onClick(record)} >create invoice</a>
     } 
   },
+  {
+    title: 'Action',
+    key: 'action',
+    fixed: 'right',
+    render: (text, record) => {
+      
+      return (
+      <Space size="middle">
+          <a onClick={() => handleModify(record)}>Modify</a>
+      </Space>
+      )
+    },
+  }
 ];
 
   return (
@@ -201,6 +223,15 @@ const columns = [
               setopenModal={(value) => setopenModal(value)}
               type={"sales"}
               title={"Sales Entry"}
+          />
+      }
+      {openEditModal && 
+          <SalesModal 
+              openModal={openEditModal}
+              setopenModal={(value) => setOpenEditModal(value)}
+              type={"sales_edit"}
+              title={"Edit Sales Entry"}
+            row={row}
           />
       }
       <Table loading={ items.length ? false : true } scroll={{ x: true }} columns={columns} dataSource={items} />

@@ -16,12 +16,17 @@ const styles = StyleSheet.create({
         flexGrow: 1,
     },
     sno: {
-        width: '5%',
+        width: '3%',
         borderRightColor: borderColor,
         borderRightWidth: 1,
     },
     imei_num: {
-        width: '21%',
+        width: '18%',
+        borderRightColor: borderColor,
+        borderRightWidth: 1,
+    },
+    order_num: {
+        width: '10%',
         borderRightColor: borderColor,
         borderRightWidth: 1,
     },
@@ -36,22 +41,29 @@ const styles = StyleSheet.create({
         borderRightWidth: 1,
     },
     model: {
-        width: '53%',
+        width: '43%',
+        borderRightColor: borderColor,
+        borderRightWidth: 1,
+    },
+    hsn: {
+        width: '6%',
         borderRightColor: borderColor,
         borderRightWidth: 1,
     },
     amount: {
-        width: '10%',
+        width: '9%',
     },
   });
 
-  const InvoiceTableHeader = ({h1, h2, h3, h4, h5}) => (
+  const InvoiceTableHeader = ({h1, h2, h3, h4, h5, h6, h7}) => (
     <View style={styles.container}>
         <Text style={styles.sno}>{h1}</Text>
         <Text style={styles.imei_num}>{h2}</Text>
+        <Text style={styles.order_num}>{h7}</Text>
         {/* <Text style={styles.barcode}>Barcode</Text> */}
         <Text style={styles.brand}>{h3}</Text>
         <Text style={styles.model}>{h4}</Text>
+        <Text style={styles.hsn}>{h6}</Text>
         <Text style={styles.amount}>{h5}</Text>
     </View>
   );

@@ -24,6 +24,7 @@ function SaleInvoice({location}) {
         "state_code": sale.state_code,
         "payment_words": sale.payment_words,
         "discount": sale.discount,
+        "hsn": 8517,
     
         "cashforphone" : [
           {

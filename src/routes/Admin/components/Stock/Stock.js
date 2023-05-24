@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Table, Input, Space, Popconfirm, message } from 'antd';
+import { Table, Input, Space, Popconfirm, message, Button } from 'antd';
 import JsBarcode from "jsbarcode";
 import { downloadBase64File } from "../Purchase/barcodeImage/imageDownload";
 import 'antd/dist/antd.css';
 import { stock, purchase, deleteNotification } from '../../api/api.js';
 import { StockModifyModal } from './Modal/StockModifyModal';
+import { CSVLink } from "react-csv";
 
 const { Search } = Input;
 
@@ -183,8 +184,17 @@ export default function Stock() {
 
   return (
     <div className="stock">
-      <Space direction="vertical">
-        <Search placeholder="enter imei" onSearch={onSearch} enterButton />
+      <Space direction="horizontal">
+        <Search placeholder="Search" onSearch={onSearch} enterButton />
+
+        <CSVLink
+          data={items}
+          filename={"stocks.csv"}
+          className="btn btn-primary"
+          target="_blank"
+        >
+          <Button>Export Stocks</Button>
+        </CSVLink>
       </Space>
 
       {openModifyModal && 
@@ -195,6 +205,7 @@ export default function Stock() {
             row={row}
         />
         }
+
 
       <Table loading={ items.length ? false : true } scroll={{ x: true }} columns={columns} dataSource={items} />
     </div>
