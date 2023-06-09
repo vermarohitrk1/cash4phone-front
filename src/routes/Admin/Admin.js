@@ -10,6 +10,7 @@ import SoldStock from './components/SoldStock/SoldStock';
 import WebsiteStock from './components/WebsiteStock/WebsiteStock';
 import Orders from './components/Orders/Orders';
 import Leads from './components/Leads/Leads';
+import Dashboard from './components/Dashboard/Dashboard';
 
 import Sidebar from "./sidebar/Sidebar";
 
@@ -23,6 +24,7 @@ import {
 
 import { Layout } from 'antd';
 import 'antd/dist/antd.css';
+// import { Dashboard } from '@material-ui/icons';
 
 const { Header, Content } = Layout;
 
@@ -39,6 +41,9 @@ function Admin(){
         <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
           <div className="site-layout-background" style={{ padding: 24, textAlign: 'center' }}>
             <Switch>
+              <Route path={`${match.path}/dashboard`}>
+                <Dashboard />
+              </Route>
               <Route path={`${match.path}/leads`}>
                 <Leads />
               </Route>

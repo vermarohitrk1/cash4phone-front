@@ -9,6 +9,7 @@ import {
   AppstoreOutlined,
   UserOutlined,
   UploadOutlined,
+  AreaChartOutlined
 } from '@ant-design/icons';
 
 import {
@@ -46,7 +47,10 @@ export default function Sidebar() {
             </div>
 
             <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-              <Menu.Item key="1" icon={<AppstoreOutlined />}>
+              <Menu.Item key="0" icon={<AppstoreOutlined />}>
+                <Link to="/admin/dashboard">Dashboard</Link>
+              </Menu.Item>
+              <Menu.Item key="1" icon={<AreaChartOutlined />}>
                 <Link to="/admin">Sales</Link>
               </Menu.Item>
               <Menu.Item key="2" icon={<ShoppingCartOutlined />}>
