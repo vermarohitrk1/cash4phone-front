@@ -385,15 +385,45 @@ const SalesEditForm = (props) => {
     );
   };
 
-  const SalesForm = (props) => {
+const SalesForm = (props) => {
   const [form] = Form.useForm();
   const [selectedCustomer, setSelectedCustomer] = useState('');
   const [isAddingNewCustomer, setIsAddingNewCustomer] = useState(false);
   const [customers, setCustomers] = useState([]);
   const [step, setStep] = useState(0);
+  const [formValues, setFormValues] = useState({
+    sale_date: '',
+    buyer_num: '',
+    buyer_name: selectedCustomer ? selectedCustomer.name : '',
+    gst_number: '',
+    pan_number: '',
+    payment_cash: '',
+    payment_card: '',
+    payment_transfer: '',
+    selling_amount: '',
+    discount: '',
+    payment_words: '',
+    payment_ref_num: '',
+    billing_address: '',
+    supply_place: '',
+    state_code: '',
+    shipping_address: '',
+    phones: [],
+  });
+
+  const handleChange = (name, value) => {
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
 
   const onFinish = (values) => {
-    axios.post(sales, values).then((res) => console.log(res));
+    const updatedFormValues = {
+      ...formValues,
+      ...values,
+    };
+    axios.post(sales, updatedFormValues).then((res) => console.log(res));
     props.setopenModal(false);
   };
 
@@ -412,8 +442,21 @@ const SalesEditForm = (props) => {
     setStep((prevStep) => prevStep - 1);
   };
 
-  const handleNext = () => {
-    setStep((prevStep) => prevStep + 1);
+  const handleNext = async () => {
+    // await form.validateFields();
+    // setStep((prevStep) => prevStep + 1);
+    await form
+    .validateFields()
+    .then((values) => {
+      setFormValues((prevValues) => ({
+        ...prevValues,
+        ...values,
+      }));
+      setStep((prevStep) => prevStep + 1);
+    })
+    .catch((error) => {
+      // Handle validation errors
+    });
   };
 
   useEffect(() => {
@@ -437,27 +480,8 @@ const SalesEditForm = (props) => {
       form={form}
       name="nest-messages"
       onFinish={onFinish}
-      validateMessages={validateMessages}
-      autoComplete="off"
-      initialValues={{
-        sale_date: '',
-        buyer_num: '',
-        buyer_name: selectedCustomer ? selectedCustomer.name : '',
-        gst_number: '',
-        pan_number: '',
-        payment_cash: '',
-        payment_card: '',
-        payment_transfer: '',
-        selling_amount: '',
-        discount: '',
-        payment_words: '',
-        payment_ref_num: '',
-        billing_address: '',
-        supply_place: '',
-        state_code: '',
-        shipping_address: '',
-        phones: [],
-      }}
+      // autoComplete="off"
+      initialValues={formValues}
     >
        {step === 0 && (
         <>
@@ -549,6 +573,16 @@ const SalesEditForm = (props) => {
             ]}
           >
             <Input />
+          </Form.Item>
+
+          {/* Back and Next/Submit buttons */}
+          <Form.Item wrapperCol={{ offset: 8 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+
+                <Button type="primary" onClick={handleNext}>
+                  Next
+                </Button>
+            </div>
           </Form.Item>
         </>
       )}
@@ -651,6 +685,19 @@ const SalesEditForm = (props) => {
             <Input />
           </Form.Item>
 
+          {/* Back and Next/Submit buttons */}
+          <Form.Item wrapperCol={{ offset: 8 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              
+                <Button className="back-button" type="default" onClick={handleBack}>
+                  Back
+                </Button>
+
+                <Button type="primary" onClick={handleNext}>
+                  Next
+                </Button>
+            </div>
+          </Form.Item>
         </>
       )}
 
@@ -742,28 +789,23 @@ const SalesEditForm = (props) => {
               </>
             )}
           </Form.List>
+            
+          {/* Back and Next/Submit buttons */}
+          <Form.Item wrapperCol={{ offset: 8 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              
+                <Button className="back-button" type="default" onClick={handleBack}>
+                  Back
+                </Button>
+                
+                <Button type="primary"  htmlType="submit">
+                  Submit
+                </Button>
+            </div>
+          </Form.Item>
+
           </>
           )}
-
-      {/* Back and Next/Submit buttons */}
-      <Form.Item wrapperCol={{ offset: 8 }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          {step > 0 && (
-            <Button className="back-button" type="default" onClick={handleBack}>
-              Back
-            </Button>
-          )}
-          {step < 2 ? (
-            <Button type="primary" onClick={handleNext}>
-              Next
-            </Button>
-          ) : (
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-          )}
-        </div>
-      </Form.Item>
 
 </Form>
 );
