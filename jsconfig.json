@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+      "baseUrl": "src",
+      "paths": {
+        "Helpers/*": ["src/Helpers/*"]
+      }
+    },
+    "include": ["src"]
+  }
+  
