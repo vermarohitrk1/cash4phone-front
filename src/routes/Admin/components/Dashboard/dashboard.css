@@ -1,0 +1,127 @@
+.site-layout-background{
+  background-color: #F5F7FA !important;
+}
+.row{
+  padding: 15px;
+}
+.card {
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 1px;
+  }
+  
+  .card-body {
+    display: flex;
+    align-items: center;
+  }
+  
+  .card-icon {
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-right: 10px;
+  }
+  
+  .card-count {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .card-label {
+    font-size: 14px;
+    color: #888;
+  }
+  .card h3{
+    margin: 0;
+    text-align: left;
+  }
+.card span.anticon {
+  font-size: 46px;
+}
+
+ .card .media.d-flex {
+    justify-content: space-between;
+    width: 100%;
+}  
+.card-body{
+  display: block;
+}
+
+.card .progress{
+  height: 8px !important;
+}
+
+.card.white{
+  background-color: rgb(255, 255, 255);
+}
+
+.card.info span.anticon, .card.info h3{
+color: #0dcaf0;
+}.card .progress .progress-bar.bg-info{
+  background-color: #0dcaf0;
+}.card.success span.anticon, .card.success h3{
+color: #16D39A;
+}.card .progress .progress-bar.bg-success{
+  background-color: #16D39A !important;
+}.card.warning span.anticon, .card.warning h3{
+color: #FFA87D;
+}.card .progress .progress-bar.bg-warning{
+  background-color: #FFA87D !important;
+}.card.danger span.anticon, .card.danger h3{
+color: #FF7588;
+}.card .progress .progress-bar.bg-danger{
+  background-color: #FF7588 !important;
+}.card.primary span.anticon, .card.primary h3{
+color: #2a37f3;
+}.card .progress .progress-bar.bg-primary{
+  background-color: #2a37f3 !important;
+}.card.secondry span.anticon, .card.secondry h3{
+color: #00B5B8;
+}.card .progress .progress-bar.bg-secondry{
+  background-color: #00B5B8 !important;
+}.card.purple span.anticon, .card.purple h3{
+color: #8884d8;
+}.card .progress .progress-bar.bg-purple{
+background-color: #8884d8 !important;
+}.card.yellow span.anticon, .card.yellow h3{
+color: #cedd41;
+}.card .progress .progress-bar.bg-yellow{
+background-color: #cedd41 !important;
+}.card.pink span.anticon, .card.pink h3{
+color: #e45c95;
+}.card .progress .progress-bar.bg-pink{
+background-color: #e45c95 !important;
+}.card.blue span.anticon, .card.blue h3{
+color: #429db4;
+}.card .progress .progress-bar.bg-blue{
+  background-color: #429db4 !important;
+}
+
+
+/* 
+.card.danger{
+  background-color: rgb(255, 30, 0);
+}
+.card.primary{
+  background-color: rgb(22, 6, 255);
+}
+.card.secondry{
+  background-color: rgb(255, 174, 0);
+}
+.card.success{
+  background-color: rgb(51, 168, 40);
+}
+.card.warning{
+  background-color: rgb(252, 227, 0);
+}
+.card.info{
+  background-color: rgb(66, 79, 253);
+}
+.card.gray{
+  background-color: rgb(97, 97, 97);
+}
+.card.light-gray{
+  background-color: rgb(209, 209, 209);
+} */

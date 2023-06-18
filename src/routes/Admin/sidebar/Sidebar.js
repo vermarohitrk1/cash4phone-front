@@ -13,7 +13,8 @@ import {
 } from '@ant-design/icons';
 
 import {
-  Link
+  Link,
+  useLocation
 } from "react-router-dom";
 
 const { Sider } = Layout;
@@ -31,6 +32,18 @@ export default function Sidebar() {
 				console.log(err.response);
 			});
 	};
+
+  let page = useLocation();
+  const currentPath = page.pathname;
+  const activeMenu = currentPath.substring(currentPath.lastIndexOf('/') + 1);
+  
+  const menus = ['dashboard','sales','purchase','stock','soldstock','websiteStock','orders','leads'];
+  var currentPosition = menus.indexOf(activeMenu);
+  if(currentPosition < 0)
+  {
+    currentPosition = 0;
+  }
+  
     return (
         <Sider
             style={{
@@ -46,12 +59,12 @@ export default function Sidebar() {
               <hr></hr>
             </div>
 
-            <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
+            <Menu theme="dark" mode="inline" defaultSelectedKeys={[`${currentPosition}`]}>
               <Menu.Item key="0" icon={<AppstoreOutlined />}>
                 <Link to="/admin/dashboard">Dashboard</Link>
               </Menu.Item>
               <Menu.Item key="1" icon={<AreaChartOutlined />}>
-                <Link to="/admin">Sales</Link>
+                <Link to="/admin/sales">Sales</Link>
               </Menu.Item>
               <Menu.Item key="2" icon={<ShoppingCartOutlined />}>
                 <Link to="/admin/purchase">Purchase</Link>

@@ -1,3 +1,4 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import Admin from "./routes/Admin/Admin";
 import StepForm from './routes/Admin/otp/StepForm';

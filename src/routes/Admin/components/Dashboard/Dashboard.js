@@ -1,118 +1,134 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'antd/dist/antd.css';
+import './dashboard.css'
+import {dashboard} from "../../api/api";
 import { Table, Button, Input, Upload, message, Space, Popconfirm } from 'antd';
-import { sellorders } from '../../api/api';
-// import { Bar } from 'react-chartjs-2';
+import { UserOutlined, AreaChartOutlined, DropboxOutlined, StockOutlined, ShoppingCartOutlined, BarChartOutlined, RiseOutlined } from '@ant-design/icons';
+import { Container, Row, Col, Card, ProgressBar } from 'react-bootstrap';
+import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+
 
 const { Search } = Input;
 
 export default function Dashboard() {
-  const [orders, setOrders] = useState([]);
-  const [openModal, setopenModal] = useState(false);
-  const [value, setValue] = useState({});
- 
-//   const onSearch = (value) => {
-//     axios.get(purchase, {
-//       params: value
-//     }).then(res => setOrders(res.data))
-//     // console.log(value);
-//   }
-
-    useEffect(() => {
-        axios.get(sellorders)
-        .then((res) => {
-            res.data.forEach(element => {
-            element['key'] = element.id;
-            element['timeSlot'] = element.fromTime + ' to ' + element.toTime;
-            // element.createTime = element.createTime.slice(0,10); 
-            });
-            setOrders(res.data);
-        })
-    }, [])
-
-    const handleModify = (record) => {
-        setValue(record);
-        setopenModal(true);
-    }
     
-  const columns = [
-    {
-      title: 'Order No',
-      dataIndex: 'id',
-      key: 'id',
-    },
-    {
-      title: 'Type',
-      dataIndex: 'order4',
-      key: 'order4',
-    },
-    {
-      title: 'User name',
-      dataIndex: 'user_name',
-      key: 'user_name',
-    },
-    {
-      title: 'Phone',
-      dataIndex: 'phone',
-      key: 'phone',
-    },
-    {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
-    },
-    {
-      title: 'Product',
-      dataIndex: 'product_name',
-      key: 'product_name',
-    },
-    // {
-    //   title: 'Answers',
-    //   dataIndex: 'answers',
-    //   key: 'answers',
-    // },
-    {
-      title: 'Price',
-      dataIndex: 'price',
-      key: 'price',
-    },
-    {
-      title: 'Payment',
-      dataIndex: 'payment_mode',
-      key: 'payment_mode',
-    },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
-    },
-    {
-      title: 'DateTime',
-      dataIndex: 'createTime',
-      key: 'createTime',
-    },
-    {
-      title: 'TimeSlot',
-      dataIndex: 'timeSlot',
-      key: 'timeSlot',
-    },
-    {
-      title: 'City',
-      dataIndex: 'city',
-      key: 'city',
-    },
-  ];
-  
-    
+  const [purchase, setPurchase] = useState({});
+  const [sales, setSalses] = useState({});
+  const [cards, setCards] = useState({});
+  useEffect(() => {
+    axios.get(dashboard)
+      .then((res) => {
+        // res.data.forEach(element => {
+          const data = res.data;
+          setPurchase(data.purchases);
+          setSalses(data.sales);
+          setCards(data.cards);
+        // });
+      })
+  },[]);
+
+    const IconCountCard = ({className, icon, count, title }) => {
+      return (
+        <div className={'card white '+className}>
+          <div className="card-content">
+            <div className="card-body d-block">
+              <div className="media d-flex mb-3">
+                <div className="media-body text-right">
+                  <h3>{count}</h3>
+                  <span>{title}</span>
+                </div>
+                <div className="align-self-center">
+                {React.cloneElement(icon, { size: 36 })}
+                </div>
+              </div>
+                  <ProgressBar variant={className} now={count} />
+            </div>
+          </div>
+        </div>
+      );
+    };
+
   return (
     <div>
-      <Space direction="horizontal">
-       {/* <Search placeholder="enter imei number" onSearch={onSearch} enterButton /> */}
-      </Space>
-      
-      <Table loading={ orders.length ? false : true } scroll={{ x: true }} columns={columns} dataSource={orders} />
-    </div>
+    <Row>
+        <Col md={3}>
+          <IconCountCard className="info" icon={<ShoppingCartOutlined />} count={cards && cards.today_purchase} title="Today Purchase" />
+        </Col>
+        <Col md={3}>
+          <IconCountCard className="warning" icon={<AreaChartOutlined />} count={cards && cards.today_sale} title="Toaday Sale" />
+        </Col>
+        <Col md={3}>
+          <IconCountCard className="success" icon={<StockOutlined />} count={cards && cards.today_stock} title="Today Stock" />
+        </Col>
+        <Col md={3}>
+          <IconCountCard className="danger" icon={<DropboxOutlined />} count={cards && cards.total_purchase} title="Total Purchase" />
+        </Col>
+    </Row>
+
+    <Row>
+        <Col md={3}>
+          <IconCountCard className="purple" icon={<ShoppingCartOutlined />} count={cards && cards.yesterday_sale} title="Yesterdy Purchase" />
+        </Col>
+        <Col md={3}>
+          <IconCountCard className="pink" icon={<AreaChartOutlined />} count={cards && cards.yesterday_purchase} title="Yesterdy Sale" />
+        </Col>
+        <Col md={3}>
+          <IconCountCard className="yellow" icon={<StockOutlined />} count={cards && cards.yesterday_stock} title="Yesterdy Stock" />
+        </Col>
+        <Col md={3}>
+          <IconCountCard className="blue" icon={<RiseOutlined />} count={cards && cards.total_sale} title="Total Sales" />
+        </Col>
+    </Row>
+
+    <Row>
+        <Col md={3}>
+          <IconCountCard className="secondry" icon={<BarChartOutlined />} count={cards && cards.total_stock} title="Total Stock" />
+        </Col>
+    </Row>
+
+    <Row style={{maxHeight:"500px"}}>
+        <Col md={6}>
+        <h3>Purchases</h3>
+        </Col>
+        <Col md={6}>
+        <h3>Sales</h3>
+        </Col>
+        <Col md={6}>
+          <BarChart width={500} height={300} data={purchase}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="value" name="This Week" fill="#8884d8" />
+          </BarChart>
+        </Col>
+        <Col md={6}>
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart
+              width={500}
+              height={300}
+              data={sales}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+                bottom: 5,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Line type="monotone" dataKey="this_week" name="This Week" stroke="#8884d8" activeDot={{ r: 8 }} />
+              <Line type="monotone" dataKey="last_week" name="Last Week" stroke="#82ca9d" />
+            </LineChart>
+          </ResponsiveContainer>
+        </Col>
+      </Row>
+  </div>
   )
 }
 

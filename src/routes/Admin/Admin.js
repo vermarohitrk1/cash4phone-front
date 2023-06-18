@@ -18,6 +18,7 @@ import {
   Switch,
   Route,
   useRouteMatch,
+  useLocation, 
 } from "react-router-dom";
 
 
@@ -31,6 +32,7 @@ const { Header, Content } = Layout;
 function Admin(){
 
   let match = useRouteMatch();
+
   return (
     <Layout>
 
@@ -66,8 +68,11 @@ function Admin(){
                 <Login />
               </Route>
               <Route path={`${match.path}/invoice`} render={(props) => <SaleInvoice {...props}/>} />
-              <Route path={match.path}>
+              <Route path={`${match.path}/sales`}>
                 <Sales />
+              </Route>
+              <Route path={match.path}>
+                <Dashboard />
               </Route>
             </Switch>
           </div>
