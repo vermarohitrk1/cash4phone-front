@@ -16,6 +16,7 @@ export default function Dashboard() {
   const [purchase, setPurchase] = useState({});
   const [sales, setSalses] = useState({});
   const [cards, setCards] = useState({});
+  
   useEffect(() => {
     axios.get(dashboard)
       .then((res) => {
