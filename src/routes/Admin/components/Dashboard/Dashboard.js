@@ -60,7 +60,7 @@ export default function Dashboard() {
           <IconCountCard className="warning" icon={<AreaChartOutlined />} count={cards && cards.today_sale} title="Toaday Sale" />
         </Col>
         <Col md={3}>
-          <IconCountCard className="success" icon={<StockOutlined />} count={cards && cards.today_stock} title="Today Stock" />
+          <IconCountCard className="success" icon={<StockOutlined />} count={cards && cards.today_sold_stock} title="Today Sold Stock" />
         </Col>
         <Col md={3}>
           <IconCountCard className="danger" icon={<DropboxOutlined />} count={cards && cards.total_purchase} title="Total Purchase" />
@@ -75,7 +75,7 @@ export default function Dashboard() {
           <IconCountCard className="pink" icon={<AreaChartOutlined />} count={cards && cards.yesterday_purchase} title="Yesterdy Sale" />
         </Col>
         <Col md={3}>
-          <IconCountCard className="yellow" icon={<StockOutlined />} count={cards && cards.yesterday_stock} title="Yesterdy Stock" />
+          <IconCountCard className="yellow" icon={<StockOutlined />} count={cards && cards.yesterday_sold_stock} title="Yesterdy Sold Stock" />
         </Col>
         <Col md={3}>
           <IconCountCard className="blue" icon={<RiseOutlined />} count={cards && cards.total_sale} title="Total Sales" />
@@ -84,7 +84,10 @@ export default function Dashboard() {
 
     <Row>
         <Col md={3}>
-          <IconCountCard className="secondry" icon={<BarChartOutlined />} count={cards && cards.total_stock} title="Total Stock" />
+          <IconCountCard className="primary" icon={<BarChartOutlined />} count={cards && cards.total_sold_stock} title="Total Sold Stock" />
+        </Col>
+        <Col md={3}>
+          <IconCountCard className="secondry" icon={<BarChartOutlined />} count={cards && cards.total_stock} title="Total Available Stock" />
         </Col>
     </Row>
 

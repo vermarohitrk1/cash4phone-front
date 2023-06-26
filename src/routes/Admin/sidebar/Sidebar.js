@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Layout, Menu } from 'antd';
 import 'antd/dist/antd.css'
@@ -18,8 +18,9 @@ import {
 } from "react-router-dom";
 
 const { Sider } = Layout;
-
 export default function Sidebar() {
+  const [currentPosition, setCurrentPosition] = useState(0);
+  const location = useLocation();
   const logout = () => {
 		axios
 			.get(logoutapp)
@@ -33,17 +34,14 @@ export default function Sidebar() {
 			});
 	};
 
-  let page = useLocation();
-  const currentPath = page.pathname;
-  const activeMenu = currentPath.substring(currentPath.lastIndexOf('/') + 1);
-  
-  const menus = ['dashboard','sales','purchase','stock','soldstock','websiteStock','orders','leads'];
-  var currentPosition = menus.indexOf(activeMenu);
-  if(currentPosition < 0)
-  {
-    currentPosition = 0;
-  }
-  
+  useEffect(() => {
+    const currentPath = location.pathname;
+    const activeMenu = currentPath.substring(currentPath.lastIndexOf('/') + 1);
+    const menus = ['dashboard', 'sales', 'purchase', 'stock', 'soldstock', 'websiteStock', 'orders', 'leads'];
+    const position = menus.indexOf(activeMenu);
+    setCurrentPosition(position >= 0 ? position : 0);
+  }, []);
+
     return (
         <Sider
             style={{
@@ -54,7 +52,7 @@ export default function Sidebar() {
             }}
           >
             <div className="logo">
-              <img className="logo-img"  src={"https://cashforphone-static-resources.s3.ap-south-1.amazonaws.com/cfp-logo.png"} alt="logo" />
+              <img className="logo-img"  src={"../../../c4p-logo.jpeg"} alt="logo" />
               Inventory Admin 
               <hr></hr>
             </div>
