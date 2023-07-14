@@ -69,10 +69,10 @@ export default function Dashboard() {
 
     <Row>
         <Col md={3}>
-          <IconCountCard className="purple" icon={<ShoppingCartOutlined />} count={cards && cards.yesterday_sale} title="Yesterdy Purchase" />
+          <IconCountCard className="purple" icon={<ShoppingCartOutlined />} count={cards && cards.yesterday_purchase} title="Yesterdy Purchase" />
         </Col>
         <Col md={3}>
-          <IconCountCard className="pink" icon={<AreaChartOutlined />} count={cards && cards.yesterday_purchase} title="Yesterdy Sale" />
+          <IconCountCard className="pink" icon={<AreaChartOutlined />} count={cards && cards.yesterday_sale} title="Yesterdy Sale" />
         </Col>
         <Col md={3}>
           <IconCountCard className="yellow" icon={<StockOutlined />} count={cards && cards.yesterday_sold_stock} title="Yesterdy Sold Stock" />
