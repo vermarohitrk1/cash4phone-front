@@ -5,14 +5,14 @@ const styles = StyleSheet.create({
    
     titleContainer:{
         flexDirection: 'row',
-        marginTop: 30,
+        marginTop: 15,
         alignItems: 'center',
     },
     reportTitle:{
         width: '100%',
         color: '#f58936',
         letterSpacing: 4,
-        fontSize: 24,
+        fontSize: 18,
         textAlign: 'center',
         textTransform: 'uppercase',
     }

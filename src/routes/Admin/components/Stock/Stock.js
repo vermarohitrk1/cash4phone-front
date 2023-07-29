@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Table, Input, Space, Popconfirm, message, Button } from 'antd';
+import { Table, Input, Space, Popconfirm, message, Button, DatePicker } from 'antd';
 import JsBarcode from "jsbarcode";
 import { downloadBase64File } from "../Purchase/barcodeImage/imageDownload";
 import 'antd/dist/antd.css';
@@ -9,20 +9,35 @@ import { StockModifyModal } from './Modal/StockModifyModal';
 import { CSVLink } from "react-csv";
 
 const { Search } = Input;
+const { RangePicker } = DatePicker;
 
 export default function Stock() {
-  // const [error, setError] = useState(null);
-  // const [isLoaded, setIsLoaded] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [items, setItems] = useState([]);
   const [openModifyModal, setOpenModifyModal] = useState(false);
   const [row, setRow] = useState({});
+  const [filter, setFilter] = useState({});
+  const [forceRender, setForceRender] = useState(false);
+
+  // Function to handle date range change
+  const handleDateRangeChange = (dates) => {
+    if (dates) {
+      const [startDate, endDate] = dates;
+      onSearch({ startDate: startDate.format('YYYY-MM-DD'), endDate: endDate.format('YYYY-MM-DD') })
+    } else {
+      const { startDate = null, endDate = null, ...newState } = filter;
+      setFilter(newState)
+    }
+  };
 
   useEffect(() => {
-    fetch(stock)
-      .then(res => res.json())
+    axios.get(stock, {
+      params: filter
+    })
       .then(
-        (result) => {
-          // setIsLoaded(true);
+        (res) => {
+          setLoading(false);
+          const result = res.data
           setItems(result);
         },
         (error) => {
@@ -30,7 +45,7 @@ export default function Stock() {
           // setError(error);
         }
       )
-    }, [])
+    }, [filter, forceRender])
     
     function handleDelete (key) {
 
@@ -56,17 +71,22 @@ export default function Stock() {
       setRow(rowValues);
     }
   
-  const onSearch = (value) => {
-    axios.get(stock, {
-      params: value
-    }).then(res => setItems(res.data))
+  const onSearch = (params) => {
+    console.log(params)
+    var params = {...filter, ...params}
+    setFilter(params)
   }
+  
+  const updateTable = () => {
+    setForceRender(prev => !prev);
+  };
 
   const columns = [
     {
       title: 'Purchase Date',
       dataIndex: 'purchase_date',
       key: 'date',
+      render: (date) => new Intl.DateTimeFormat('en-IN', { dateStyle: 'short' }).format(new Date(date)),
     },
     {
       title: 'Order Number',
@@ -184,8 +204,7 @@ export default function Stock() {
 
   return (
     <div className="stock">
-      <Space direction="horizontal">
-        <Search placeholder="Search" onSearch={onSearch} enterButton />
+      <Space direction="horizontal" align="left">
 
         <CSVLink
           data={items}
@@ -193,8 +212,11 @@ export default function Stock() {
           className="btn btn-primary"
           target="_blank"
         >
-          <Button>Export Stocks</Button>
+          <Button>Export</Button>
         </CSVLink>
+        <RangePicker onChange={handleDateRangeChange} />
+        <Search placeholder="Search" 
+          onSearch={value => onSearch({ search: value })} enterButton />
       </Space>
 
       {openModifyModal && 
@@ -203,11 +225,12 @@ export default function Stock() {
             setOpenModifyModal={(value) => setOpenModifyModal(value)}
             title={"Modify Purchase"}
             row={row}
+            updateTable={updateTable}
         />
         }
 
 
-      <Table loading={ items.length ? false : true } scroll={{ x: true }} columns={columns} dataSource={items} />
+      <Table loading={loading} scroll={{ x: true }} columns={columns} dataSource={items} />
     </div>
   )
 }

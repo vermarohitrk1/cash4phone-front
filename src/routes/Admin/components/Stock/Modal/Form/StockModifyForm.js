@@ -26,6 +26,7 @@ const validateMessages = {
 
 
 const StockModifyForm = (props) => {
+  const {updateTable} = props;
   const onFinish = (values) => {
     values.order_num = props.row.order_num;
     values.purchase_date = props.row.purchase_date;
@@ -44,7 +45,7 @@ const StockModifyForm = (props) => {
       .then((res) => {
         if(res.status === 200) {
           message.success('Entry Modified successfully');
-          
+          updateTable()
           axios.post(deleteNotification, {
             action: "MOD",
             order_num: props.row.order_num

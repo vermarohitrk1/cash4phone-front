@@ -5,6 +5,7 @@ import './SalesInvoice.css';
 
 function SaleInvoice({location}) {
     let sale = location.state.invoice;
+
     const invoice = {
         "invoice_number": sale.invoice_number,
         "sale_date": sale.sale_date.slice(0,10),
@@ -24,6 +25,7 @@ function SaleInvoice({location}) {
         "state_code": sale.state_code,
         "payment_words": sale.payment_words,
         "discount": sale.discount,
+        "total_margin": sale.total_margin,
         "hsn": 8517,
     
         "cashforphone" : [
@@ -33,7 +35,7 @@ function SaleInvoice({location}) {
             "gstin": "07AAHCK0065B1Z0",
             "state_code": "07",
             "corporate_address": "Corporate Address",
-            "registered_address": "DD 35, Kalkaji, New Delhi-110019",
+            "registered_address": "K22 basement, lajpat nagar, near vijay sales Pincode 110024",
             "website": "www.cashforphone.in",
             "email": "info@cashforphone.in",
             "phone": "8800880101"

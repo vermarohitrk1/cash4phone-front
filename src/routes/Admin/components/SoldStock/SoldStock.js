@@ -1,22 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Table, Input, Space } from 'antd';
+import { Table, Input, Space, Button, DatePicker } from 'antd';
 import 'antd/dist/antd.css';
+import { CSVLink } from "react-csv";
 import { phones, searchPhones } from '../../api/api.js';
 
 const { Search } = Input;
+const { RangePicker } = DatePicker;
 
 export default function SoldStock() {
-  // const [error, setError] = useState(null);
-  // const [isLoaded, setIsLoaded] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [items, setItems] = useState([]);
+  const [filter, setFilter] = useState(null);
+
+  // Function to handle date range change
+  const handleDateRangeChange = (dates) => {
+    if (dates) {
+      const [startDate, endDate] = dates;
+      onSearch({ startDate: startDate.format('YYYY-MM-DD'), endDate: endDate.format('YYYY-MM-DD') })
+    } else {
+      const { startDate = null, endDate = null, ...newState } = filter;
+      setFilter(newState)
+    }
+  };
 
   useEffect(() => {
-    fetch(phones)
-      .then(res => res.json())
+    axios.get(phones, {
+      params: filter
+      })
       .then(
-        (result) => {
-          // setIsLoaded(true);
+        (res) => {
+          setLoading(false);
+          const result = res.data
           setItems(result);
         },
         (error) => {
@@ -24,15 +39,20 @@ export default function SoldStock() {
           // setError(error);
         }
       )
-    }, [])
+    }, [filter]);
     
-  const onSearch = (value) => {
-    axios.get(searchPhones, {
-      params: value
-    }).then(res => setItems(res.data))
+  const onSearch = (params) => {
+    var params = {...filter, ...params}
+    setFilter(params)
   }
 
   const columns = [
+    {
+      title: 'Sale Date',
+      dataIndex: 'sale_date',
+      key: 'sale_date',
+      render: (date) => new Intl.DateTimeFormat('en-IN', { dateStyle: 'short' }).format(new Date(date)),
+    },
     {
       title: 'Purchase Order Number',
       dataIndex: 'order_num',
@@ -83,11 +103,23 @@ export default function SoldStock() {
 
   return (
     <div className="stock">
-      <Space direction="vertical">
-        <Search placeholder="enter imei number" onSearch={onSearch} enterButton />
+    
+    
+      <Space direction="horizontal" align="left">
+      <CSVLink
+          data={items}
+          filename={"items.csv"}
+          className="btn btn-primary"
+          target="_blank"
+        >
+        <Button type="default">Export</Button>
+        </CSVLink>
+        <RangePicker onChange={handleDateRangeChange} format="DD-MM-YYYY"/>
+        <Search placeholder="Enter imei number" 
+          onSearch={value => onSearch({ search: value })} enterButton />
       </Space>
 
-      <Table loading={ items.length ? false : true } scroll={{ x: true }} columns={columns} dataSource={items} />
+      <Table loading={loading} scroll={{ x: true }} columns={columns} dataSource={items} />
     </div>
   )
 }

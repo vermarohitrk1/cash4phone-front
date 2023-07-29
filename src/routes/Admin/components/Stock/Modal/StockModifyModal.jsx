@@ -11,7 +11,7 @@ export const StockModifyModal = (props) => {
       onOk={(value) => props.setOpenModifyModal(false)}
       onCancel={(value) => props.setOpenModifyModal(false)}
     >
-      <StockModifyForm setOpenModifyModal={props.setOpenModifyModal} row={props.row} />
+      <StockModifyForm setOpenModifyModal={props.setOpenModifyModal} row={props.row} updateTable={props.updateTable}/>
     </Modal>
   );
 };

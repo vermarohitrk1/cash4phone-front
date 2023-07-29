@@ -26,10 +26,15 @@ const validateMessages = {
 
 
 const PurchaseForm = (props) => {
+  const {updateTable} = props;
+
   const onFinish = (values) => {
     axios.post(purchase, values)
-      .then((res) => console.log(res));
-    
+      .then((res) => {
+        console.log(typeof updateTable)
+        updateTable();
+        console.log(res)
+      });
     props.setopenModal(false);
   };
 

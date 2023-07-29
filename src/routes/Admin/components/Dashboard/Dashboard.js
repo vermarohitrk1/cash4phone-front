@@ -3,22 +3,38 @@ import axios from 'axios';
 import 'antd/dist/antd.css';
 import './dashboard.css'
 import {dashboard} from "../../api/api";
-import { Table, Button, Input, Upload, message, Space, Popconfirm } from 'antd';
+import { Table, Button, Input, Upload, message, Space, Popconfirm, DatePicker } from 'antd';
 import { UserOutlined, AreaChartOutlined, DropboxOutlined, StockOutlined, ShoppingCartOutlined, BarChartOutlined, RiseOutlined } from '@ant-design/icons';
 import { Container, Row, Col, Card, ProgressBar } from 'react-bootstrap';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 
 const { Search } = Input;
+const { RangePicker } = DatePicker;
 
 export default function Dashboard() {
     
   const [purchase, setPurchase] = useState({});
   const [sales, setSalses] = useState({});
   const [cards, setCards] = useState({});
+  const [filter, setFilter] = useState({});
+  const [forceRender, setForceRender] = useState(false);
   
+  // Function to handle date range change
+  const handleDateRangeChange = (dates) => {
+    if (dates) {
+      const [startDate, endDate] = dates;
+      setFilter({ startDate: startDate.format('YYYY-MM-DD'), endDate: endDate.format('YYYY-MM-DD') })
+    } else {
+      const { startDate = null, endDate = null, ...newState } = filter;
+      setFilter(newState)
+    }
+  };
+
   useEffect(() => {
-    axios.get(dashboard)
+    axios.get(dashboard, {
+      params: filter
+    })
       .then((res) => {
         // res.data.forEach(element => {
           const data = res.data;
@@ -27,7 +43,7 @@ export default function Dashboard() {
           setCards(data.cards);
         // });
       })
-  },[]);
+  },[filter]);
 
     const IconCountCard = ({className, icon, count, title }) => {
       return (
@@ -53,40 +69,48 @@ export default function Dashboard() {
   return (
     <div>
     <Row>
-        <Col md={3}>
+        <Col md={4}>
           <IconCountCard className="info" icon={<ShoppingCartOutlined />} count={cards && cards.today_purchase} title="Today Purchase" />
         </Col>
-        <Col md={3}>
+        <Col md={4}>
           <IconCountCard className="warning" icon={<AreaChartOutlined />} count={cards && cards.today_sale} title="Toaday Sale" />
         </Col>
-        <Col md={3}>
+        <Col md={4}>
           <IconCountCard className="success" icon={<StockOutlined />} count={cards && cards.today_sold_stock} title="Today Sold Stock" />
         </Col>
-        <Col md={3}>
-          <IconCountCard className="danger" icon={<DropboxOutlined />} count={cards && cards.total_purchase} title="Total Purchase" />
-        </Col>
     </Row>
 
     <Row>
-        <Col md={3}>
+        <Col md={4}>
           <IconCountCard className="purple" icon={<ShoppingCartOutlined />} count={cards && cards.yesterday_sale} title="Yesterdy Purchase" />
         </Col>
-        <Col md={3}>
+        <Col md={4}>
           <IconCountCard className="pink" icon={<AreaChartOutlined />} count={cards && cards.yesterday_purchase} title="Yesterdy Sale" />
         </Col>
-        <Col md={3}>
+        <Col md={4}>
           <IconCountCard className="yellow" icon={<StockOutlined />} count={cards && cards.yesterday_sold_stock} title="Yesterdy Sold Stock" />
         </Col>
-        <Col md={3}>
+    </Row>
+        <RangePicker onChange={handleDateRangeChange} />
+    <Row>
+        <Col md={4}>
+          <IconCountCard className="danger" icon={<DropboxOutlined />} count={cards && cards.total_purchase} title="Total Purchase" />
+        </Col>
+        <Col md={4}>
           <IconCountCard className="blue" icon={<RiseOutlined />} count={cards && cards.total_sale} title="Total Sales" />
         </Col>
-    </Row>
-
-    <Row>
-        <Col md={3}>
+        <Col md={4}>
           <IconCountCard className="primary" icon={<BarChartOutlined />} count={cards && cards.total_sold_stock} title="Total Sold Stock" />
         </Col>
-        <Col md={3}>
+    </Row>
+    <Row>
+        <Col md={4}>
+          <IconCountCard className="gray" icon={<RiseOutlined />} count={cards && cards.total_margin} title="Total Margin" />
+        </Col>
+        <Col md={4}>
+          <IconCountCard className="indigo" icon={<RiseOutlined />} count={cards && cards.today_margin} title="Today Total Margin" />
+        </Col>
+        <Col md={4}>
           <IconCountCard className="secondry" icon={<BarChartOutlined />} count={cards && cards.total_stock} title="Total Available Stock" />
         </Col>
     </Row>

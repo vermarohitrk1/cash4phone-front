@@ -3,7 +3,7 @@ import {Text, View, StyleSheet } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
     bigContainer: {
-        marginTop: 20,
+        marginTop: '10px',
         flexDirection: 'row',
     },
     container1: {

@@ -4,6 +4,7 @@ import { Modal } from 'antd';
 import PurchaseForm from './Form/PurchaseForm';
 
 const PurchaseModal = (props) => {
+  const {updateTable} = props;
   return (
     <>
       <Modal
@@ -17,7 +18,7 @@ const PurchaseModal = (props) => {
       >
        
       {props.type === "purchase" && 
-        <PurchaseForm setopenModal={props.setopenModal}/>
+        <PurchaseForm setopenModal={props.setopenModal} updateTable={updateTable}/>
       }
       </Modal>
     </>

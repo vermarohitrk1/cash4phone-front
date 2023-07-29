@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { Table, Button, Space, Input } from 'antd';
+import { Table, Button, Space, Input, DatePicker } from 'antd';
 import SalesModal from './Modal/SalesModal.js';
 import { Redirect } from "react-router-dom";
 import 'antd/dist/antd.css';
@@ -9,78 +9,66 @@ import { CSVLink } from "react-csv";
 import axios from 'axios';
 
 const { Search } = Input;
+const { RangePicker } = DatePicker;
 
 export default function Sales() {
-  // const [error, setError] = useState(null);
-  // const [isLoaded, setIsLoaded] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [openModal, setopenModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [items, setItems] = useState([]);
   const [row, setRow] = useState({});
 
-  const [soldItems, setSoldItems] = useState([]);
   const [openinvoice, setOpenInvoice] = useState(false);
   const [invoiceData, setInvoiceData] = useState({hello: "world"});
+  const [filter, setFilter] = useState({});
+  const [forceRender, setForceRender] = useState(false);
 
-  function handleCLick() {
-    fetch(phones)
-        .then(res => res.json())
-        .then(
-          (phones) => {
-            // setIsLoaded(true);
-            setSoldItems(phones);
-          },
-          (error) => {
-            // setIsLoaded(true);
-            // setError(error);
-          }
-        )
-
-    fetch(sales)
-    .then(res => res.json())
-    .then(
-      (result) => {
-        // setIsLoaded(true);
-        result.forEach(element => {
-          element['key'] = element.invoice_number;
-          element.sale_date = element.sale_date.slice(0, 10);
-          if(element.sale_date <= '2022-03-31') {
-            element.invoice_number_unique = element.invoice_number;
-            element.invoice_number = "KNOV/2022-23/" + element.invoice_number;
-          } else {
-            element.invoice_number_unique = element.invoice_number;
-            element.invoice_number = "KNOV/2023-24/" + element.invoice_number;
-
-          }
-          // element.invoice_number = "KNOV/2021-22/" + element.invoice_number;
-        });
-        setItems(result);
-      },
-      (error) => {
-        // setIsLoaded(true);
-        // setError(error);
-      }
-    )
+  // Function to handle date range change
+  const handleDateRangeChange = (dates) => {
+    if (dates) {
+      const [startDate, endDate] = dates;
+      onSearch({ startDate: startDate.format('YYYY-MM-DD'), endDate: endDate.format('YYYY-MM-DD') })
+    } else {
+      const { startDate = null, endDate = null, ...newState } = filter;
+      setFilter(newState)
+    }
   };
 
   useEffect(() => {
-      handleCLick();
-    }, []
-  );
-
-  const onSearch = (value) => {
     axios.get(sales, {
-      params: value
-    }).then(res => setItems(res.data))
-    // console.log(value);
+      params: filter
+    }).then(res => {
+      setLoading(false);
+      const result = res.data
+      result.forEach(element => {
+        element['key'] = element.invoice_number;
+        element.sale_date = element.sale_date.slice(0, 10);
+        if(element.sale_date <= '2022-03-31') {
+          element.invoice_number_unique = element.invoice_number;
+          element.invoice_number = "KNOV/2022-23/" + element.invoice_number;
+        } else {
+          element.invoice_number_unique = element.invoice_number;
+          element.invoice_number = "KNOV/2023-24/" + element.invoice_number;
+
+        }
+      });
+      setItems(result);
+    });
+  }, [filter, forceRender]);
+
+  const onSearch = (params) => {
+    var params = {...filter, ...params}
+    console.log(params)
+    setFilter(params)
   }
 
   function onClick(record) {
 
     axios.get(phones, {
-      params: record.invoice_number.slice(13)
+      params: {invoice_number: record.invoice_number.slice(13)}
     }).then(res => {
       let data = { invoice: record, phones: res.data}
+      console.log(data)
       setInvoiceData(data);
       setOpenInvoice(true);
     })
@@ -90,7 +78,11 @@ export default function Sales() {
     setOpenEditModal(true);
     setRow(rowValues);
   }
-  
+
+  const updateSales = () => {
+    setForceRender(prev => !prev);
+  };
+
 const columns = [
   {
     title: 'Sale Date',
@@ -209,12 +201,29 @@ const columns = [
   return (
     <div className="sales">
       {openinvoice && <Redirect to={{ pathname: "/admin/invoice", state: invoiceData}} /> }
-      <Space direction="horizontal">
+      <Space direction="horizontal" align="left">
+        <CSVLink
+          data={items}
+          filename={"sales.csv"}
+          className="btn btn-primary"
+          target="_blank"
+        >
+        <Button type="primary">Export</Button>
+        </CSVLink>
+
+        {/* <Button onClick={handleCLick}>
+        Download Sold Items
+        </Button> */}
+
+        <RangePicker onChange={handleDateRangeChange} />
         <Button type="primary" onClick={() => setopenModal(true)}>
             Add Record
         </Button>
 
-        <Search placeholder="enter invoice number" onSearch={onSearch} enterButton />
+        <Search 
+          placeholder="Enter invoice number"
+          onSearch={value => onSearch({ search: value })}
+          enterButton />
       </Space>
         
       {openModal && 
@@ -223,6 +232,7 @@ const columns = [
               setopenModal={(value) => setopenModal(value)}
               type={"sales"}
               title={"Sales Entry"}
+              updateSales={updateSales} 
           />
       }
       {openEditModal && 
@@ -231,31 +241,16 @@ const columns = [
               setopenModal={(value) => setOpenEditModal(value)}
               type={"sales_edit"}
               title={"Edit Sales Entry"}
+              updateSales={updateSales} 
             row={row}
           />
       }
-      <Table loading={ items.length ? false : true } scroll={{ x: true }} columns={columns} dataSource={items} />
-      <CSVLink
-        data={items}
-        filename={"sales.csv"}
-        className="btn btn-primary"
-        target="_blank"
-      >
-      <Button>Download Invoices</Button>
-      </CSVLink>
-
-      {/* <Button onClick={handleCLick}>
-      Download Sold Items
-      </Button> */}
-
-      <CSVLink
-        data={soldItems}
-        filename={"items.csv"}
-        className="btn btn-primary"
-        target="_blank"
-      >
-      <Button>Download Sold Items</Button>
-      </CSVLink>
+      <Table 
+      loading={loading} 
+      scroll={{ x: true }} 
+      columns={columns} 
+      dataSource={items} />
+      
     </div>
   )
 }

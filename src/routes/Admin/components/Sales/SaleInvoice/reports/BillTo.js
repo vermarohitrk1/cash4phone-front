@@ -3,23 +3,27 @@ import {Text, View, StyleSheet } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
     headerContainer: {
-        marginTop: 36,
+        marginTop: '15px',
         flexDirection: 'row',
         borderColor: 'black',
-        borderWidth: 2
+        borderWidth: 2,
+        fontSize: '12px',
     },
     container1: {
         paddingLeft: 20,
         width: '50%',
+        fontSize: '10px',
     },
     container2: {
         paddingLeft: 20,
         width: '50%',
+        fontSize: '10px',
     },
     billTo: {
         marginTop: 10,
         paddingBottom: 3,
-        fontFamily: 'Helvetica-Oblique'
+        fontFamily: 'Helvetica-Oblique',
+        fontSize: '12px',
     },
   });
 

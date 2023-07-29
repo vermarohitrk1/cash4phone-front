@@ -41,3 +41,7 @@
 .form-footer .back-button {
   margin-right: 10px;
 }
+.btn {
+  padding: 0;
+  border: 0;
+}

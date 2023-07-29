@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import JsBarcode from "jsbarcode";
 import 'antd/dist/antd.css';
-import { Table, Button, Input, Upload, message, Space } from 'antd';
+import { Table, Button, Input, Upload, message, Space, DatePicker } from 'antd';
+import { CSVLink } from "react-csv";
 import { UploadOutlined } from '@ant-design/icons';
 import PurchaseModal from "./Modal/PurchaseModal.js";
 import { purchase, purchaseFile } from '../../api/api.js';
@@ -11,22 +12,38 @@ import { downloadBase64File } from './barcodeImage/imageDownload.js';
 const { Search } = Input;
 
 export default function Purchase() {
-  // const [error, setError] = useState(null);
-  // const [isLoaded, setIsLoaded] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [items, setItems] = useState([]);
   const [openModal, setopenModal] = useState(false);
+  const [filter, setFilter] = useState(null);
+  const [forceRender, setForceRender] = useState(false);
   const formData = new FormData();
 
+  const { RangePicker } = DatePicker;
+
+  // Function to handle date range change
+  const handleDateRangeChange = (dates) => {
+    if (dates) {
+      const [startDate, endDate] = dates;
+      onSearch({ startDate: startDate.format('YYYY-MM-DD'), endDate: endDate.format('YYYY-MM-DD') })
+    } else {
+      const { startDate = null, endDate = null, ...newState } = filter;
+      setFilter(newState)
+    }
+  };
+
   useEffect(() => {
-      fetch(purchase)
-        .then(res => res.json())
+    axios.get(purchase, {
+      params: filter
+      })
         .then(
-          (result) => {
-            // setIsLoaded(true);
-            result.forEach((element, index) => {
-              element['key'] = index;
-              element.purchase_date = element.purchase_date.slice(0, 10);
-            });
+          (res) => {
+            setLoading(false);
+            const result = res.data
+            // result.forEach((element, index) => {
+            //   element['key'] = index;
+            //   element.purchase_date = element.purchase_date.slice(0, 10);
+            // });
             setItems(result);
           },
           (error) => {
@@ -34,25 +51,29 @@ export default function Purchase() {
             // setError(error);
           }
         )
-    }, [])
+    }, [filter, forceRender])
 
-  const onSearch = (value) => {
-    axios.get(purchase, {
-      params: value
-    }).then(res => setItems(res.data))
-    // console.log(value);
+  const onSearch = (params) => {
+    var params = {...filter, ...params}
+    setFilter(params)
   }
     
+  const updateTable = () => {
+    setForceRender(prev => !prev);
+  };
+
   const columns = [
     {
       title: 'Sl No',
       dataIndex: 'id',
+      sorter: (a, b) => a.id - b.id,
       key: 'id',
     },
     {
       title: 'Purchase Date',
       dataIndex: 'purchase_date',
       key: 'date',
+      render: (date) => new Intl.DateTimeFormat('en-IN', { dateStyle: 'short' }).format(new Date(date)),
     },
     {
       title: 'Order Number',
@@ -172,14 +193,24 @@ export default function Purchase() {
   return (
     <div>
       <Space direction="horizontal">
-       <Button type="primary" onClick={() => setopenModal(true)}>
-          Add Record
-       </Button>
+      
+      <CSVLink
+          data={items}
+          filename={"purchases.csv"}
+          className="btn btn-primary"
+          target="_blank"
+        >
+        <Button type="default">Export</Button>
+        </CSVLink>
 
        <Upload {...props}>
             <Button icon={<UploadOutlined />}>Upload File</Button>
        </Upload>
-       <Search placeholder="Search" onSearch={onSearch} enterButton />
+        <RangePicker onChange={handleDateRangeChange} format="DD-MM-YYYY"/>
+       <Button type="primary" onClick={() => setopenModal(true)}>
+          Add Record
+       </Button>
+       <Search placeholder="Search" onSearch={value => onSearch({ search: value })} enterButton />
       </Space>
 
       {openModal && 
@@ -187,9 +218,10 @@ export default function Purchase() {
             openModal={openModal}
             setopenModal={(value) => setopenModal(value)}
             title={"Purchase Entry"}
-            type={"purchase"} />}
+            type={"purchase"}
+            updateTable={updateTable} />}
       
-      <Table loading={ items.length ? false : true } scroll={{ x: true }} columns={columns} dataSource={items} />
+      <Table loading={loading} scroll={{ x: true }} columns={columns} dataSource={items} />
     </div>
   )
 }

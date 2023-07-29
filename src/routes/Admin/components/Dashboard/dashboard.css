@@ -97,6 +97,14 @@ background-color: #e45c95 !important;
 color: #429db4;
 }.card .progress .progress-bar.bg-blue{
   background-color: #429db4 !important;
+}.card.gray span.anticon, .card.gray h3{
+  color: #727272;
+}.card .progress .progress-bar.bg-gray{
+  background-color: #727272 !important;
+}.card.indigo span.anticon, .card.indigo h3{
+color: #a100c2;
+}.card .progress .progress-bar.bg-indigo{
+  background-color: #a100c2 !important;
 }
 
 

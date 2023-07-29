@@ -28,12 +28,15 @@ const validateMessages = {
 };
 
 const SalesForm = (props) => {
+  const { updateSales } = props;
+
   const [form] = Form.useForm();
   const [isAddingNewCustomer, setIsAddingNewCustomer] = useState(false);
   const [customers, setCustomers] = useState([]);
   const [products, setProducts] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [step, setStep] = useState(0);
+  const [selectedIMEIs, setSelectedIMEIs] = useState([]);
   const [formValues, setFormValues] = useState({
     sale_date: getCurrentDate(),
     buyer_num: '',
@@ -63,6 +66,7 @@ const SalesForm = (props) => {
     axios.post(sales, updatedFormValues).then((res) =>{ 
       // console.log(res.status)
       props.setopenModal(false);
+      updateSales();
       message.success('Sale created succesfully.');
     }).catch((error) => {
       if(error.response && error.response.status === 422 ){
@@ -106,28 +110,51 @@ const SalesForm = (props) => {
   };
 
   const handleMobileSelect = (value,name) => {
+
       const selected = products.find((product) => product.imei_num === value);
       const item_price = selected?.purchase_amount;
       
       const phones = form.getFieldValue('phones');
       const updatedPhones = phones.map((phone, index) => {
+        setSelectedIMEIs((prevSelectedIMEIs) => {
+          const updatedSelectedIMEIs = { ...prevSelectedIMEIs };
+          updatedSelectedIMEIs[name] = value;
+          return updatedSelectedIMEIs;
+        });
         if (index === name) {
-          setTotalPrice((prevTotalPrice) => prevTotalPrice + parseFloat(item_price))
           return { ...phone, selling_price: item_price || '' };
         }
         return phone;
       });
       form.setFieldsValue({ phones: updatedPhones });
+      updateItemPrice()
   }
-  const removeItemPrice = (name) => {
-    const phones = form.getFieldValue('phones');
-    phones.map((phone, index) => {
-      if (index === name) {
-        if (phone && phone.selling_price) {
-          setTotalPrice((prevTotalPrice) => prevTotalPrice - parseFloat(phone.selling_price))
-        }
-      }
+  
+  const handleRemovePhone = (name) => {
+    const removedIMEI = selectedIMEIs[name];
+
+    setSelectedIMEIs((prevSelectedIMEIs) => {
+      const updatedSelectedIMEIs = { ...prevSelectedIMEIs };
+      delete updatedSelectedIMEIs[name];
+      return updatedSelectedIMEIs;
     });
+
+    const selectOption = document.querySelector(`[value="${removedIMEI}"]`);
+    if (selectOption) {
+      selectOption.disabled = false;
+    }
+  };
+
+  const updateItemPrice = () => {
+    const phones = form.getFieldValue('phones');
+  console.log(phones)
+    let totalPrice = 0;
+    phones.map((phone, index) => {
+        if (phone && phone.selling_price) {
+          totalPrice += +phone.selling_price;
+        }
+    });
+    setTotalPrice(totalPrice); 
   };
 
   const handlePaymentChange = (event) => {
@@ -192,6 +219,17 @@ const SalesForm = (props) => {
     fetchCustomers();
   }, []);
 
+  // useEffect(() => {
+  //   // Get the IMEI numbers of all selected phones
+  //   const selectedIMEINumbers = Object.values(selectedIMEIs);
+
+  //   // Disable the corresponding options for selected phones
+  //   const selectOptions = document.querySelectorAll('select[name$="imei_num"] option');
+  //   selectOptions.forEach((option) => {
+  //     const { value } = option;
+  //     option.disabled = selectedIMEINumbers.includes(value);
+  //   });
+  // }, [selectedIMEIs]);
 
   return (
     <Form
@@ -385,7 +423,8 @@ const SalesForm = (props) => {
         
             {(fields, { add, remove }) => (
               <>
-                {fields.map(({ key, name, fieldKey, ...restField }) => (
+                {fields.map(({ key, name, fieldKey, ...restField }) => {
+                  return(
                   <Space
                     key={key}
                     style={{ display: 'flex', marginBottom: 8 }}
@@ -406,7 +445,11 @@ const SalesForm = (props) => {
                         onChange={(value) => handleMobileSelect(value, name)}
                       >
                         {products.map((product) => (
-                          <Select.Option key={product.id} value={product.imei_num}>
+                          <Select.Option 
+                          key={product.id} 
+                          value={product.imei_num}
+                          disabled={Object.values(selectedIMEIs).includes(product.imei_num)}
+                          >
                             {product.imei_num}
                           </Select.Option>
                         ))}
@@ -419,15 +462,17 @@ const SalesForm = (props) => {
                       fieldKey={[fieldKey, 'selling_price']}
                       rules={[{ required: true, message: 'Missing Selling Price' }]}
                     >
-                      <Input placeholder="Selling Price" type="number" />
+                      <Input placeholder="Selling Price" type="number" onChange={updateItemPrice} />
                     </Form.Item>
                     <MinusCircleOutlined onClick={() => {
-                        removeItemPrice(name);
                         remove(name);
+                        handleRemovePhone(name);
+                        updateItemPrice();
                       }} />
                   </Space>
                   
-                ))}
+                )})}
+
                 {totalPrice > 0 && (    
                   <span style={{ marginBottom: '15px', fontSize: '16px'}}>
                     Total amount: {totalPrice}
@@ -571,6 +616,7 @@ const SalesForm = (props) => {
 
 
 const SalesEditForm = (props) => {
+  const { updateSales } = props;
 
   const isEditable = (created) => {
     const currentTime = new Date();
@@ -582,6 +628,7 @@ const SalesEditForm = (props) => {
   };
 
     const onFinish = (values) => {
+
       values.invoice_number = props.row.invoice_number_unique;
       if(!values.buyer_num) values.buyer_num = props.row.buyer_num;
       if(!values.buyer_name) values.buyer_name = props.row.buyer_name;
@@ -592,6 +639,7 @@ const SalesEditForm = (props) => {
       axios.patch(sales_update, values)
         .then((res) => {
           if(res.status === 200) {
+            updateSales()
             message.success('Entry Modified successfully');
           }
           props.setOpenModal(false);

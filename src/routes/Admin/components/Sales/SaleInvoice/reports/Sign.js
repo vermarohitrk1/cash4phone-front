@@ -8,7 +8,8 @@ const styles = StyleSheet.create({
     },
     container: {
         flexDirection: 'column',
-        width: '30%',
+        width: '40%',
+        fontSize: '10px',
     }
   });
 
@@ -17,12 +18,13 @@ const styles = StyleSheet.create({
     return (
         <View style={styles.headerContainer}>
             <View style={styles.container}>
-                <Text style={styles.name}>For KNOVEDAD PVT LTD</Text>
+                {/* <Text style={styles.name}>For KNOVEDAD PVT LTD</Text>
                 <Text> </Text>
                 <Text> </Text>
                 <Text> </Text>
                 <Text> </Text>
-                <Text>Authorized Signatory</Text>
+                <Text>Authorized Signatory</Text> */}
+                <Text>System generated invoice no signature required.</Text>
             </View>
         </View>
   )};
