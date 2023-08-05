@@ -36,6 +36,7 @@ const SalesForm = (props) => {
   const [products, setProducts] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [step, setStep] = useState(0);
+  const [URP, setURP] = useState(false);
   const [selectedIMEIs, setSelectedIMEIs] = useState([]);
   const [formValues, setFormValues] = useState({
     sale_date: getCurrentDate(),
@@ -95,9 +96,15 @@ const SalesForm = (props) => {
       const selected = customers.find(
         (customer) => customer.mobile === value || customer.gstin === value
       );
+      // if(selected?.gstin === null || selected?.gstin == ''){
+      //   setURP(true);
+      // }else{
+      //   setURP(false)
+      // }
+
       form.setFieldsValue({
         buyer_num: selected?.mobile || '',
-        gst_number: selected?.gstin || '',
+        gst_number: selected?.gstin || 'URP',
         buyer_name: selected?.name || '',
         pan_number: selected?.pan || '',
         billing_address: selected?.billing_address || '',
@@ -268,14 +275,14 @@ const SalesForm = (props) => {
               optionFilterProp="children"
               onChange={handleCustomerSelect}
             >
+              <Select.Option key="add-new" value="add-new">
+                Add New
+              </Select.Option>
               {customers.map((customer) => (
                 <Select.Option key={customer.mobile} value={customer.mobile}>
                   {customer.mobile}
                 </Select.Option>
               ))}
-              <Select.Option key="add-new" value="add-new">
-                Add New
-              </Select.Option>
             </Select>
           </Form.Item>
           
@@ -294,14 +301,17 @@ const SalesForm = (props) => {
               optionFilterProp="children"
               onChange={handleCustomerSelect}
             >
-              {customers.map((customer) => (
-                <Select.Option key={customer.gstin} value={customer.gstin}>
-                  {customer.gstin}
-                </Select.Option>
-              ))}
               <Select.Option key="add-new" value="add-new">
                 Add New
               </Select.Option>
+              {customers.map((customer) => (
+                customer.gstin ? (
+                  <Select.Option key={customer.gstin} value={customer.gstin}>
+                    {customer.gstin}
+                  </Select.Option>
+                ) : null
+              ))}
+              {}
             </Select>
           </Form.Item>
 
@@ -331,8 +341,17 @@ const SalesForm = (props) => {
               >
                 <Input />
               </Form.Item>
-              
-            </>
+              </>
+          ) : null}
+          {URP ? (
+            {/* <>
+            <Form.Item
+                name={['new_gst_number']}
+                label="GSTIN"
+              >
+                <Input />
+              </Form.Item>
+            </> */}
           ) : null}
 
           <Form.Item
