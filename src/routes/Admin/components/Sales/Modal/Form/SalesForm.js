@@ -411,7 +411,7 @@ const SalesForm = (props) => {
               },
             ]}
           >
-            <Input />
+            <Input type="number" />
           </Form.Item>
 
           <Form.Item
