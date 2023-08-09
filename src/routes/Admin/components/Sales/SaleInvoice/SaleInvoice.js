@@ -5,7 +5,7 @@ import './SalesInvoice.css';
 
 function SaleInvoice({location}) {
     let sale = location.state.invoice;
-
+console.log(sale)
     const invoice = {
         "invoice_number": sale.invoice_number,
         "sale_date": sale.sale_date.slice(0,10),
@@ -26,6 +26,7 @@ function SaleInvoice({location}) {
         "payment_words": sale.payment_words,
         "discount": sale.discount,
         "total_margin": sale.total_margin,
+        "taxable_value": sale.taxable_value,
         "hsn": 8517,
     
         "cashforphone" : [
