@@ -1,9 +1,10 @@
+import './../../../style.scss'
 import { useState, useEffect } from 'react';
 import { Form, Input, Button, Space, Select, message, Typography } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { getCurrentDate, convertNumberToString } from '../../../../../../Helpers/helpers';
 import axios from 'axios';
-import { sales, GET_customers, sales_update, purchase } from '../../../../api/api';
+import { sales, GET_customers, sales_update, purchase, stock } from '../../../../api/api';
 const { Text } = Typography;
 
 const layout = {
@@ -38,6 +39,8 @@ const SalesForm = (props) => {
   const [step, setStep] = useState(0);
   const [URP, setURP] = useState(false);
   const [selectedIMEIs, setSelectedIMEIs] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
   const [formValues, setFormValues] = useState({
     sale_date: getCurrentDate(),
     buyer_num: '',
@@ -59,6 +62,8 @@ const SalesForm = (props) => {
   });
 
   const onFinish = (values) => {
+    
+    setIsSubmitting(true);
     const updatedFormValues = {
       ...formValues,
       ...values,
@@ -69,10 +74,12 @@ const SalesForm = (props) => {
       props.setopenModal(false);
       updateSales();
       message.success('Sale created succesfully.');
+      setIsSubmitting(false);
     }).catch((error) => {
       if(error.response && error.response.status === 422 ){
         message.error(error.response.data.error);
         setStep(0);
+        setIsSubmitting(false);
       }
     });
     
@@ -215,7 +222,7 @@ const SalesForm = (props) => {
 
     const fetchProducts = async () => {
       try {
-        const res = await axios.get(purchase);
+        const res = await axios.get(stock);
         const products = res.data.map((products) => products);
         setProducts(products);
       } catch (error) {
@@ -462,6 +469,8 @@ const SalesForm = (props) => {
                         placeholder="Select IMEI Number"
                         optionFilterProp="children"
                         onChange={(value) => handleMobileSelect(value, name)}
+                        style={{MinWidth: '155px'}}
+                        className="select-phone"
                       >
                         {products.map((product) => (
                           <Select.Option 
@@ -620,7 +629,7 @@ const SalesForm = (props) => {
                   Back
                 </Button>
                 
-                <Button type="primary"  htmlType="submit">
+                <Button type="primary"  htmlType="submit" loading={isSubmitting}>
                   Submit
                 </Button>
             </div>
