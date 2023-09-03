@@ -707,6 +707,10 @@ const SalesEditForm = (props) => {
           <Input defaultValue={props.row.shipping_address}/>
         </Form.Item>
   
+        <Form.Item name={['eway_number']} label="E-Way Number">
+          <Input defaultValue={props.row.eway_number}/>
+        </Form.Item>
+
         <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 22 }}>
         {isEditable(props.row.createTime) ? (
           <Button type="primary" htmlType="submit">

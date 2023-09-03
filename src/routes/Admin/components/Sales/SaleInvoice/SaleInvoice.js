@@ -27,6 +27,7 @@ console.log(sale)
         "discount": sale.discount,
         "total_margin": sale.total_margin,
         "taxable_value": sale.taxable_value,
+        "eway_number": sale.eway_number,
         "hsn": 8517,
     
         "cashforphone" : [

@@ -43,7 +43,8 @@ const styles = StyleSheet.create({
         <InvoiceTableFooter text={"Taxable Value"} value={invoice.taxable_value}/>
         <InvoiceTableFooter text={"Amount in words (inclusive GST)"} value={invoice.payment_words}/>
         {ncr && <TaxHeader h1={"Tax Bifurcation"} h2={"CGST(9%)"} h3={"SGST(9%)"} h4={"IGST(0%)"} h5={"Total Tax"} />}
-        {ncr && <TaxHeader h1={" "} h2={parseInt(invoice.gst_amt)/2} h3={parseInt(invoice.gst_amt)/2} h4={"0"} h5={invoice.gst_amt} />}
+        {ncr && <TaxHeader h1={" "} h2={Math.max(parseInt(invoice.gst_amt) / 2, 0)} h3={Math.max(parseInt(invoice.gst_amt) / 2, 0)} h4={"0"} h5={Math.max(parseInt(invoice.gst_amt), 0)} />}
+        {/* {ncr && <TaxHeader h1={" "} h2={parseInt(invoice.gst_amt)/2} h3={parseInt(invoice.gst_amt)/2} h4={"0"} h5={invoice.gst_amt} />} */}
         {roi && <TaxHeader h1={"Tax Bifurcation"} h2={"CGST(0%)"} h3={"SGST(0%)"} h4={"IGST(18%)"} h5={"Total Tax"} />}
         {roi && <TaxHeader h1={" "} h2={"0"} h3={"0"} h4={parseInt(invoice.gst_amt)} h5={invoice.gst_amt} />}
     </View>

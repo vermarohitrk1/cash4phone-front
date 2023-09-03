@@ -99,6 +99,10 @@ const styles = StyleSheet.create({
                     <Text style={styles.label}>State Code : </Text>
                     <Text >{invoice.state_code}</Text>
                 </View >
+                <View style={styles.invoiceDateContainer}>
+                    <Text style={styles.label}>E-Way Number: </Text>
+                    <Text >{invoice.eway_number}</Text>
+                </View >
             </View>
         </View>
   );
