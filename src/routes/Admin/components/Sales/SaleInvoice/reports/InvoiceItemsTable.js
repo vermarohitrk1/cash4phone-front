@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
         {ncr && <TaxHeader h1={" "} h2={Math.max(parseInt(invoice.gst_amt) / 2, 0)} h3={Math.max(parseInt(invoice.gst_amt) / 2, 0)} h4={"0"} h5={Math.max(parseInt(invoice.gst_amt), 0)} />}
         {/* {ncr && <TaxHeader h1={" "} h2={parseInt(invoice.gst_amt)/2} h3={parseInt(invoice.gst_amt)/2} h4={"0"} h5={invoice.gst_amt} />} */}
         {roi && <TaxHeader h1={"Tax Bifurcation"} h2={"CGST(0%)"} h3={"SGST(0%)"} h4={"IGST(18%)"} h5={"Total Tax"} />}
-        {roi && <TaxHeader h1={" "} h2={"0"} h3={"0"} h4={parseInt(invoice.gst_amt)} h5={invoice.gst_amt} />}
+        {roi && <TaxHeader h1={" "} h2={"0"} h3={"0"} h4={Math.max(parseInt(invoice.gst_amt), 0)} h5={Math.max(parseInt(invoice.gst_amt), 0)} />}
     </View>
   )};
   

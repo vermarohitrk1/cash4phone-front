@@ -1,14 +1,11 @@
-import './../../../style.scss'
 import { useState, useEffect } from 'react';
 import { Form, Input, Button, Space, Select, message, Typography } from 'antd';
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { getCurrentDate, convertNumberToString } from '../../../../../../Helpers/helpers';
+import { customer_update } from './../../api/api.js';
 import axios from 'axios';
-import { sales, GET_customers, sales_update, purchase, stock } from '../../../../api/api';
 const { Text } = Typography;
 
 
-const customerEditForm = (props) => {
+const CustomerEditForm = (props) => {
     const { updateCustomerRow } = props;
   
        const onFinish = (values) => {
@@ -17,7 +14,7 @@ const customerEditForm = (props) => {
         axios.patch(customer_update, values)
           .then((res) => {
             if(res.status === 200) {
-              updateSales()
+              
               message.success('Entry Modified successfully');
             }
             props.setOpenModal(false);
@@ -25,7 +22,7 @@ const customerEditForm = (props) => {
       };
     
       return (
-        <Form {...layout} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages} autoComplete="off">
+        <Form name="nest-messages" onFinish={onFinish} autoComplete="off">
           
           <Form.Item 
                 name={['buyer_num']} 
@@ -61,22 +58,14 @@ const customerEditForm = (props) => {
             <Input defaultValue={props.row.eway_number}/>
           </Form.Item>
   
-          <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 22 }}>
-          {isEditable(props.row.createTime) ? (
-            <Button type="primary" htmlType="submit">
-              Update
-            </Button>
-          ) : (
-            <>
+          <Form.Item wrapperCol={{ offset: 22 }}>
+          
               <Button type="primary" htmlType="submit" disabled>
                 Update
-              </Button>
-              <Text className="error-message" type="warning">Immutable</Text>
-            </>
-          )}
+              </Button>     
         </Form.Item>
         </Form>
       );
     };
   
-  export {customerEditForm};
+  export {CustomerEditForm};

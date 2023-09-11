@@ -24,6 +24,7 @@ export const login               = process.env.REACT_APP_API_URL+"admin/login";
 export const GET_customers       = process.env.REACT_APP_API_URL+"admin/sales/customers";
 export const dashboard           = process.env.REACT_APP_API_URL+"admin/dashboard";
 export const customers           = process.env.REACT_APP_API_URL+"admin/customers";
+export const customer_update     = process.env.REACT_APP_API_URL+"admin/customer_update";
 
 // keep last api in comment while in local also. it will keep sending msgs whenever you delete stock entries.
 

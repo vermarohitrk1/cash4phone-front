@@ -1,8 +1,8 @@
 import React from 'react';
 import { Modal } from 'antd';
-import {CustomerEditForm} from './Customers/CustomerForms';
+import { CustomerEditForm } from './../CustomerForms';
 
-const CustomerModal = (props) => {
+const Customer_modal = (props) => {
   const { updateCustomer } = props;
   
   return (
@@ -22,4 +22,4 @@ const CustomerModal = (props) => {
   );
 };
 
-export default CustomerModal;
+export default Customer_modal;

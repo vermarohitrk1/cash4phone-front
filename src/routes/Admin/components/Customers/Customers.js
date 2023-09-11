@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'antd/dist/antd.css';
 import { Table, Button, Input, Upload, message, Space, Popconfirm } from 'antd';
-import { GET_customers } from '../../api/api';
+import { GET_customers } from '../../api/api.js';
 import CustomerModal from './Modal/CustomerModal.js';
 
 const { Search } = Input;
@@ -99,7 +99,7 @@ export default function Customers() {
             <Search placeholder="Search" onSearch={onSearch} enterButton />
         </Space>
         {openEditModal &&
-            <SalesModal 
+            <CustomerModal 
               openModal={openEditModal}
               setopenModal={(value) => setOpenEditModal(value)}
               type={"customer_edit"}
