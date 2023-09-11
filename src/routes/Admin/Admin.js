@@ -11,6 +11,7 @@ import WebsiteStock from './components/WebsiteStock/WebsiteStock';
 import Orders from './components/Orders/Orders';
 import Leads from './components/Leads/Leads';
 import Dashboard from './components/Dashboard/Dashboard';
+import Customers from './components/Customers/Customers'
 
 import Sidebar from "./sidebar/Sidebar";
 
@@ -45,6 +46,9 @@ function Admin(){
             <Switch>
               <Route path={`${match.path}/dashboard`}>
                 <Dashboard />
+              </Route>
+              <Route path={`${match.path}/customers`}>
+                <Customers />
               </Route>
               <Route path={`${match.path}/leads`}>
                 <Leads />

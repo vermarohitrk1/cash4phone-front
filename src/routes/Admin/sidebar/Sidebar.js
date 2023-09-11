@@ -9,7 +9,9 @@ import {
   AppstoreOutlined,
   UserOutlined,
   UploadOutlined,
-  AreaChartOutlined
+  AreaChartOutlined,
+  UsergroupAddOutlined,
+  StockOutlined
 } from '@ant-design/icons';
 
 import {
@@ -61,6 +63,9 @@ export default function Sidebar() {
               <Menu.Item key="0" icon={<AppstoreOutlined />}>
                 <Link to="/admin/dashboard">Dashboard</Link>
               </Menu.Item>
+              <Menu.Item key="9" icon={<UsergroupAddOutlined />}>
+                <Link to="/admin/customers">Customers</Link>
+              </Menu.Item>
               <Menu.Item key="1" icon={<AreaChartOutlined />}>
                 <Link to="/admin/sales">Sales</Link>
               </Menu.Item>
@@ -70,7 +75,7 @@ export default function Sidebar() {
               <Menu.Item key="3" icon={<UploadOutlined />}>
                 <Link to="/admin/stock">Stock</Link>
               </Menu.Item>
-              <Menu.Item key="4" icon={<UploadOutlined />}>
+              <Menu.Item key="4" icon={<StockOutlined />}>
                 <Link to="/admin/soldstock">Sold Stock</Link>
               </Menu.Item>
               <hr />
