@@ -3,7 +3,7 @@ import { Modal } from 'antd';
 import { CustomerEditForm } from './../CustomerForms';
 
 const Customer_modal = (props) => {
-  const { updateCustomer } = props;
+  const { updateCustomerRow } = props;
   
   return (
     <Modal
@@ -15,8 +15,8 @@ const Customer_modal = (props) => {
       width={1000}
       footer={null}
     >
-      {props.type === "sales_edit" && 
-        <CustomerEditForm setOpenModal={props.setopenModal} row={props.row} updateCustomer={updateCustomer}/>
+      {props.type === "customer_edit" && 
+        <CustomerEditForm setOpenModal={props.setopenModal} row={props.row} updateCustomerRow={updateCustomerRow}/>
       }
     </Modal>
   );

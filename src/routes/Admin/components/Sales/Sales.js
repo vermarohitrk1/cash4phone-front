@@ -221,7 +221,7 @@ const columns = [
         </Button>
 
         <Search 
-          placeholder="Enter invoice number"
+          placeholder="Enter Invoice or Buyer No."
           onSearch={value => onSearch({ search: value })}
           enterButton />
       </Space>

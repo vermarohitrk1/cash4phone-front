@@ -11,6 +11,7 @@ export default function Customers() {
   const [customers, setCustomers] = useState([]);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [row, setRow] = useState({});
+  const [forceRender, setForceRender] = useState(false);
   
     const onSearch = (value) => {
         axios.get(GET_customers, {
@@ -20,12 +21,11 @@ export default function Customers() {
     }
 
     useEffect(() => {
-        console.log(GET_customers)
         axios.get(GET_customers)
         .then((res) => {
             setCustomers(res.data);
         })
-    }, [])
+    }, [forceRender])
 
     function handleModify(rowValues) {
         setOpenEditModal(true);
@@ -33,7 +33,7 @@ export default function Customers() {
     }
 
     function updateCustomerRow(){
-
+      setForceRender(prev => !prev);
     }
     
   const columns = [
@@ -105,7 +105,7 @@ export default function Customers() {
               type={"customer_edit"}
               title={"Edit Customer"}
               updateCustomerRow={updateCustomerRow}
-            row={row}
+              row={row}
           />
         }
 

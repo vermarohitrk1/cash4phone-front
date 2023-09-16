@@ -233,6 +233,20 @@ const SalesForm = (props) => {
     fetchCustomers();
   }, []);
 
+  const validateSellingAmount = (rule, value) => {
+    const paymentCash = form.getFieldValue('payment_cash') || 0;
+    const paymentCard = form.getFieldValue('payment_card') || 0;
+    const paymentTransfer = form.getFieldValue('payment_transfer') || 0;
+    const discount = form.getFieldValue('discount') || 0;
+
+    const calculatedTotal = parseInt(paymentCash) +  parseInt(paymentCard) +  parseInt(paymentTransfer) +  parseInt(discount);
+
+    if (calculatedTotal !== parseInt(value) || value < totalPrice) {
+      return Promise.reject('Total payment must equal the sum of above payments and not less than Total Amount');
+    }
+    return Promise.resolve();
+  };
+
   // useEffect(() => {
   //   // Get the IMEI numbers of all selected phones
   //   const selectedIMEINumbers = Object.values(selectedIMEIs);
@@ -591,6 +605,7 @@ const SalesForm = (props) => {
             rules={[
               {
                 required: true,
+                validator: validateSellingAmount,
               },
             ]}
           >

@@ -63,9 +63,9 @@ export default function Sidebar() {
               <Menu.Item key="0" icon={<AppstoreOutlined />}>
                 <Link to="/admin/dashboard">Dashboard</Link>
               </Menu.Item>
-              <Menu.Item key="9" icon={<UsergroupAddOutlined />}>
+              {/* <Menu.Item key="9" icon={<UsergroupAddOutlined />}>
                 <Link to="/admin/customers">Customers</Link>
-              </Menu.Item>
+              </Menu.Item> */}
               <Menu.Item key="1" icon={<AreaChartOutlined />}>
                 <Link to="/admin/sales">Sales</Link>
               </Menu.Item>
