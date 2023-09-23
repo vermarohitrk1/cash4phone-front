@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'antd/dist/antd.css';
 import { Table, Button, Input, Upload, message, Space, Popconfirm } from 'antd';
+import { EditOutlined, FundOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
 import { GET_customers } from '../../api/api.js';
 import CustomerModal from './Modal/CustomerModal.js';
 
@@ -85,7 +87,10 @@ export default function Customers() {
         
         return (
         <Space size="middle">
-            <a onClick={() => handleModify(record)}>Modify</a>
+            <a onClick={() => handleModify(record)}>
+              <EditOutlined />
+            </a>
+            <Link to={`/admin/customer/${record.id}`}><FundOutlined /></Link>
         </Space>
         )
       },

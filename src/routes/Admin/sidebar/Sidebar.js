@@ -28,7 +28,7 @@ export default function Sidebar() {
 			.get(logoutapp)
 			.then((res) => {
 				console.log(res.data);
-		    window.location.reload();
+		    //window.location.reload();
 
 			})
 			.catch((err) => {
@@ -39,9 +39,10 @@ export default function Sidebar() {
   useEffect(() => {
     const currentPath = location.pathname;
     const activeMenu = currentPath.substring(currentPath.lastIndexOf('/') + 1);
-    const menus = ['dashboard', 'sales', 'purchase', 'stock', 'soldstock', 'websiteStock', 'orders', 'leads'];
+    const menus = ['dashboard', 'sales', 'purchase', 'stock', 'soldstock', 'websiteStock', 'orders', 'leads', 'customers'];
     const position = menus.indexOf(activeMenu);
-    setCurrentPosition(position >= 0 ? position : 0);
+    setCurrentPosition(position > 0 ? position : 0);
+    console.log(position, currentPosition)
   }, []);
 
     return (
@@ -59,13 +60,10 @@ export default function Sidebar() {
               <hr></hr>
             </div>
 
-            <Menu theme="dark" mode="inline" defaultSelectedKeys={[`${currentPosition}`]}>
+            <Menu theme="dark" mode="inline" defaultSelectedKeys={{ currentPosition }}>
               <Menu.Item key="0" icon={<AppstoreOutlined />}>
                 <Link to="/admin/dashboard">Dashboard</Link>
               </Menu.Item>
-              {/* <Menu.Item key="9" icon={<UsergroupAddOutlined />}>
-                <Link to="/admin/customers">Customers</Link>
-              </Menu.Item> */}
               <Menu.Item key="1" icon={<AreaChartOutlined />}>
                 <Link to="/admin/sales">Sales</Link>
               </Menu.Item>
@@ -79,6 +77,10 @@ export default function Sidebar() {
                 <Link to="/admin/soldstock">Sold Stock</Link>
               </Menu.Item>
               <hr />
+              {/* <Menu.Item key="8" icon={<UsergroupAddOutlined />}>
+                <Link to="/admin/customers">Customers</Link>
+              </Menu.Item>
+              <hr /> */}
               <Menu.Item key="5" icon={<UploadOutlined />}>
                 <Link to="/admin/websiteStock">Buy Stock</Link>
               </Menu.Item>
@@ -90,7 +92,7 @@ export default function Sidebar() {
                 <Link to="/admin/leads">All Leads</Link>
               </Menu.Item>
               <hr />
-              <Menu.Item key="8" icon={<UserOutlined />}>
+              <Menu.Item key="9" icon={<UserOutlined />}>
               <Link to="/admin" onClick={logout}>Logout</Link>
               </Menu.Item>
             </Menu>

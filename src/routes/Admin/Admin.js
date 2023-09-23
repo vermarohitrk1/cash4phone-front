@@ -12,6 +12,7 @@ import Orders from './components/Orders/Orders';
 import Leads from './components/Leads/Leads';
 import Dashboard from './components/Dashboard/Dashboard';
 import Customers from './components/Customers/Customers'
+import CustomerDetails from './components/Customers/CustomerDetials'
 
 import Sidebar from "./sidebar/Sidebar";
 
@@ -74,6 +75,9 @@ function Admin(){
               <Route path={`${match.path}/invoice`} render={(props) => <SaleInvoice {...props}/>} />
               <Route path={`${match.path}/sales`}>
                 <Sales />
+              </Route>
+              <Route exact path={`${match.path}/customer/:customerId`}>
+                <CustomerDetails />
               </Route>
               <Route path={match.path}>
                 <Dashboard />
