@@ -77,10 +77,10 @@ export default function Sidebar() {
                 <Link to="/admin/soldstock">Sold Stock</Link>
               </Menu.Item>
               <hr />
-              {/* <Menu.Item key="8" icon={<UsergroupAddOutlined />}>
+              <Menu.Item key="8" icon={<UsergroupAddOutlined />}>
                 <Link to="/admin/customers">Customers</Link>
               </Menu.Item>
-              <hr /> */}
+              <hr />
               <Menu.Item key="5" icon={<UploadOutlined />}>
                 <Link to="/admin/websiteStock">Buy Stock</Link>
               </Menu.Item>
