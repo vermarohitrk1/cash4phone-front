@@ -709,6 +709,7 @@ const SalesEditForm = (props) => {
       if(!values.buyer_name) values.buyer_name = props.row.buyer_name;
       if(!values.supply_place) values.supply_place = props.row.supply_place;
       if(!values.state_code) values.state_code = props.row.state_code;
+      if(!values.billing_address) values.billing_address = props.row.billing_address;
       if(!values.shipping_address) values.shipping_address = props.row.shipping_address;
 
       axios.patch(sales_update, values)
@@ -750,6 +751,10 @@ const SalesEditForm = (props) => {
           <Input defaultValue={props.row.state_code}/>
         </Form.Item>
   
+        <Form.Item name={['billing_address']} label="Billing Address">
+          <Input defaultValue={props.row.billing_address}/>
+        </Form.Item>
+
         <Form.Item name={['shipping_address']} label="Shipping Address">
           <Input defaultValue={props.row.shipping_address}/>
         </Form.Item>
@@ -759,18 +764,18 @@ const SalesEditForm = (props) => {
         </Form.Item>
 
         <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 22 }}>
-        {isEditable(props.row.createTime) ? (
+        {/* {isEditable(props.row.createTime) ? ( */}
           <Button type="primary" htmlType="submit">
             Update
           </Button>
-        ) : (
+        {/* ) : (
           <>
             <Button type="primary" htmlType="submit" disabled>
               Update
             </Button>
             <Text className="error-message" type="warning">Immutable</Text>
           </>
-        )}
+        )} */}
       </Form.Item>
       </Form>
     );
