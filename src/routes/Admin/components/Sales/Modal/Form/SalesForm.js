@@ -1,5 +1,5 @@
 import './../../../style.scss'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Form, Input, Button, Space, Select, message, Typography } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { getCurrentDate, convertNumberToString } from '../../../../../../Helpers/helpers';
@@ -40,7 +40,8 @@ const SalesForm = (props) => {
   const [URP, setURP] = useState(false);
   const [selectedIMEIs, setSelectedIMEIs] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+  const inputRefs = useRef({});
+
   const [formValues, setFormValues] = useState({
     sale_date: getCurrentDate(),
     buyer_num: '',
@@ -259,6 +260,28 @@ const SalesForm = (props) => {
   //   });
   // }, [selectedIMEIs]);
 
+
+  const handleSearch = (value, name) => {
+    // Check for an exact match in the available options
+    const matchingProduct = products.find((product) => product.imei_num === value);
+
+    if (matchingProduct && !Object.values(selectedIMEIs).includes(matchingProduct.imei_num)) {
+     handleMobileSelect(matchingProduct.imei_num, name);
+      const updatedPhones = form.getFieldValue('phones');
+      updatedPhones[name].imei_num = matchingProduct.imei_num;
+      updatedPhones.push({ imei_num: '', selling_price: '' });
+      form.setFieldsValue({
+        phones: updatedPhones,
+      });
+      
+      setTimeout(() => {
+        const lastIndex = updatedPhones.length - 1;
+        console.log(lastIndex)
+        inputRefs.current[lastIndex]?.focus();
+      });
+    }
+  };
+
   return (
     <Form
       form={form}
@@ -268,7 +291,7 @@ const SalesForm = (props) => {
       // autoComplete="off"
       initialValues={formValues}
     >
-       {step === 0 && (
+      {step === 0 && (
         <>
           <Form.Item
             name={['sale_date']}
@@ -483,8 +506,10 @@ const SalesForm = (props) => {
                         placeholder="Select IMEI Number"
                         optionFilterProp="children"
                         onChange={(value) => handleMobileSelect(value, name)}
+                        onSearch={(value) => handleSearch(value, name)}
                         style={{MinWidth: '155px'}}
                         className="select-phone"
+                        ref={(ref) => (inputRefs.current[name] = ref)}
                       >
                         {products.map((product) => (
                           <Select.Option 
@@ -521,7 +546,14 @@ const SalesForm = (props) => {
                   </span>
                 )}
                 <Form.Item>
-                  <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                  <Button type="dashed" onClick={() => { 
+                    add();
+                    setTimeout(() => {
+                      const lastIndex = fields.length;
+                      inputRefs.current[lastIndex]?.focus();
+                    });
+                  }} 
+                  block icon={<PlusOutlined />}>
                     Add Phone
                   </Button>
                 </Form.Item>
