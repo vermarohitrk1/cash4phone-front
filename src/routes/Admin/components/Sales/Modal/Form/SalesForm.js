@@ -499,7 +499,7 @@ const SalesForm = (props) => {
                       label="IMEI"
                       name={[name, 'imei_num']}
                       fieldKey={[fieldKey, 'imei_num']}
-                      rules={[{ required: true, message: 'Missing IMEI' }]}
+                      // rules={[{ required: true, message: 'Missing IMEI' }]}
                     >
                       <Select
                         showSearch
@@ -527,7 +527,7 @@ const SalesForm = (props) => {
                       label="Selling Price"
                       name={[name, 'selling_price']}
                       fieldKey={[fieldKey, 'selling_price']}
-                      rules={[{ required: true, message: 'Missing Selling Price' }]}
+                      // rules={[{ required: true, message: 'Missing Selling Price' }]}
                     >
                       <Input placeholder="Selling Price" type="number" onChange={updateItemPrice} />
                     </Form.Item>
