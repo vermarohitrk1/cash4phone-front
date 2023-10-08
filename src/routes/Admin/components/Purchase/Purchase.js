@@ -155,10 +155,11 @@ export default function Purchase() {
             JsBarcode(`#barcode${index}`, record.barcode, {
               displayValue: true
             });
-  
+
             const imgSrc2 = document.getElementById(`barcode${index}`).src;
             const myFilename = "barcode.png";
-            downloadBase64File(imgSrc2, myFilename);
+            downloadBase64File(imgSrc2, myFilename, index, record);
+
           }
         return (
           <div>
