@@ -4,6 +4,7 @@ import InvoiceTableHeader from './InvoiceTableHeader'
 import InvoiceTableRow from './InvoiceTableRow'
 import InvoiceTableBlankSpace from './InvoiceTableBlankSpace'
 import InvoiceTableFooter from './InvoiceTableFooter';
+import InvoiceRowTowCol from './InvoiceRowTowCol';
 import TaxHeader from './TaxHeader';
 import Total from './Total';
 
@@ -40,8 +41,9 @@ const styles = StyleSheet.create({
         {/*<InvoiceTableFooter text={"Shorts and Excesses"} value={0}/>*/}
         <InvoiceTableFooter text={"Discount Applied"} value={invoice.discount}/>
         <Total text={"Total (after Discount)"} value={invoice.selling_amount - invoice.discount}/>
-        <InvoiceTableFooter text={"Taxable Value"} value={invoice.taxable_value}/>
-        <InvoiceTableFooter text={"Amount in words (inclusive GST)"} value={invoice.payment_words}/>
+        <InvoiceTableFooter text={"Taxable Value"} value={Math.max(parseInt(invoice.taxable_value) - parseInt(invoice.gst_amt), 0)}/>
+        <InvoiceTableFooter text={"Sub Total"} value={Math.max(parseInt(invoice.taxable_value), 0)}/>
+        <InvoiceRowTowCol text={"Amount in words (inclusive GST)"} value={invoice.payment_words}/>
         {ncr && <TaxHeader h1={"Tax Bifurcation"} h2={"CGST(9%)"} h3={"SGST(9%)"} h4={"IGST(0%)"} h5={"Total Tax"} />}
         {ncr && <TaxHeader h1={" "} h2={Math.max(parseInt(invoice.gst_amt) / 2, 0)} h3={Math.max(parseInt(invoice.gst_amt) / 2, 0)} h4={"0"} h5={Math.max(parseInt(invoice.gst_amt), 0)} />}
         {/* {ncr && <TaxHeader h1={" "} h2={parseInt(invoice.gst_amt)/2} h3={parseInt(invoice.gst_amt)/2} h4={"0"} h5={invoice.gst_amt} />} */}

@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
         fontStyle: 'bold',
     },
     description: {
-        width: '90%',
+        width: '40%',
         textAlign: 'center',
         borderRightColor: borderColor,
         borderRightWidth: 1,
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
         // paddingRight: 8,
     },
     total: {
-        width: '10%',
+        width: '60%',
         textAlign: 'center',
         // paddingRight: 8,
         fontSize: 10,
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   });
 
 
-const InvoiceTableFooter = ({text, value}) => {
+const InvoiceRowTowCol = ({text, value}) => {
     return(  
         <Fragment>
             <View style={styles.row}>
@@ -41,4 +41,4 @@ const InvoiceTableFooter = ({text, value}) => {
     )
 };
   
-  export default InvoiceTableFooter
+  export default InvoiceRowTowCol
