@@ -11,7 +11,9 @@ import {
   UploadOutlined,
   AreaChartOutlined,
   UsergroupAddOutlined,
-  StockOutlined
+  StockOutlined,
+  DollarOutlined,
+  LogoutOutlined
 } from '@ant-design/icons';
 
 import {
@@ -39,7 +41,7 @@ export default function Sidebar() {
   useEffect(() => {
     const currentPath = location.pathname;
     const activeMenu = currentPath.substring(currentPath.lastIndexOf('/') + 1);
-    const menus = ['dashboard', 'sales', 'purchase', 'stock', 'soldstock', 'websiteStock', 'orders', 'leads', 'customers'];
+    const menus = ['dashboard', 'sales', 'purchase', 'stock', 'soldstock', 'websiteStock', 'orders', 'leads', 'customers', 'payouts'];
     const position = menus.indexOf(activeMenu);
     setCurrentPosition(position > 0 ? position : 0);
     console.log(position, currentPosition)
@@ -70,6 +72,9 @@ export default function Sidebar() {
               <Menu.Item key="2" icon={<ShoppingCartOutlined />}>
                 <Link to="/admin/purchase">Purchase</Link>
               </Menu.Item>
+              <Menu.Item key="9" icon={<DollarOutlined />}>
+                <Link to="/admin/payouts">Payouts</Link>
+              </Menu.Item>
               <Menu.Item key="3" icon={<UploadOutlined />}>
                 <Link to="/admin/stock">Stock</Link>
               </Menu.Item>
@@ -92,7 +97,7 @@ export default function Sidebar() {
                 <Link to="/admin/leads">All Leads</Link>
               </Menu.Item>
               <hr />
-              <Menu.Item key="9" icon={<UserOutlined />}>
+              <Menu.Item key="9" icon={<LogoutOutlined />}>
               <Link to="/admin" onClick={logout}>Logout</Link>
               </Menu.Item>
             </Menu>

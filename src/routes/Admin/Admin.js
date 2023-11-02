@@ -13,6 +13,7 @@ import Leads from './components/Leads/Leads';
 import Dashboard from './components/Dashboard/Dashboard';
 import Customers from './components/Customers/Customers'
 import CustomerDetails from './components/Customers/CustomerDetials'
+import Payouts from "./components/Payouts/payouts";
 
 import Sidebar from "./sidebar/Sidebar";
 
@@ -62,6 +63,9 @@ function Admin(){
               </Route>
               <Route path={`${match.path}/purchase`}>
                 <Purchase />
+              </Route>
+              <Route path={`${match.path}/payouts`}>
+                <Payouts />
               </Route>
               <Route path={`${match.path}/stock`}>
                 <Stock />
