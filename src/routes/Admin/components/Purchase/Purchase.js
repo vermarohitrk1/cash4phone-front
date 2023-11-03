@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import JsBarcode from "jsbarcode";
 import 'antd/dist/antd.css';
-import { Table, Button, Input, Upload, message, Space, DatePicker } from 'antd';
+import { Table, Button, Input, Upload, message, Space, DatePicker, Typography, Tooltip } from 'antd';
 import { CSVLink } from "react-csv";
 import { UploadOutlined } from '@ant-design/icons';
 import PurchaseModal from "./Modal/PurchaseModal.js";
@@ -10,6 +10,7 @@ import { purchase, purchaseFile } from '../../api/api.js';
 import { downloadBase64File } from './barcodeImage/imageDownload.js';
 
 const { Search } = Input;
+const { Text } = Typography;
 
 export default function Purchase() {
   const [loading, setLoading] = useState(true);
@@ -142,9 +143,48 @@ export default function Purchase() {
       key: 'overall_condition',
     },
     {
+      title: 'Kyc Doc',
+      dataIndex: 'kyc_pdf',
+      key: 'kyc_pdf',
+      render: (kyc_pdf, record, index) => {
+        return(
+          <>
+          {kyc_pdf != null &&
+          <a href={kyc_pdf} target="_blank" rel="noopener noreferrer">
+            PDF
+          </a>
+          }
+          </>
+        )
+      }
+    },
+    {
       title: 'Purchase Price',
       dataIndex: 'purchase_price',
       key: 'purchase_price',
+    },
+    {
+      title: 'Payment Status',
+      dataIndex: 'payment_status',
+      key: 'payment_status',
+      render: (status, record, index) => {
+        
+        return (
+          <>
+            {status == 'success' &&
+              <Text type="success">Success</Text>
+            }
+            {status == 'failure' &&
+              <Tooltip placement="topLeft" title={record.failure_reason}>
+                <Text type="danger">Failure</Text>
+              </Tooltip>
+            }
+            {status == null &&
+              'N/A'
+            }
+          </>
+        )
+      }
     },
     {
       title: 'Barcode',

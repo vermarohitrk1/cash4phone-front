@@ -25,6 +25,12 @@ export function downloadBase64File (base64Data, filename, index, record) {
             container.appendChild(orderNumber);
             container.appendChild(phoneModel);
             container.appendChild(barcodeImg);
+
+            if(record.model.length > 22){
+                var ModelfontSize = 6;
+            }else{
+                var ModelfontSize = 8;
+            }
             // Create a new window for printing
             const printWindow = window.open("", "", "width=600,height=400");
             printWindow.document.write(`
@@ -39,12 +45,23 @@ export function downloadBase64File (base64Data, filename, index, record) {
                   .label {
                     max-width: 38.1mm;
                     max-height: 22.2mm;
-                    margin-rigth: 3.2mm;
+                    margin-right: 6mm;
                     /* Add other styling for the label container here */
                   }
                   .outer{
+                    height: 100%;
                     display:flex;
                     margin: 1.6mm;
+                    align-items: end;
+                  }
+                  @media print {  
+                    @page {
+                      size: 82.6mm 22.2mm; /* landscape */
+                    }
+                    body {
+                        max-width: 38.1mm;
+                    max-height: 22.2mm;
+                      }
                   }
                 </style>
               </head>
@@ -52,18 +69,18 @@ export function downloadBase64File (base64Data, filename, index, record) {
                 <div class="outer">
                     <div class="label">
                         <div class="template" style="text-align:center;">
-                            <h4 style="text-align:center;margin:0;">${record.order_num}</h4>
-                            <p style="text-align:center;margin:0;font-size:16px;font-weight:bold;">${record.brand} ${record.model}</p>
+                            <p style="text-align:center;margin:0;font-size:10px;font-weight:bold;">Order No: ${record.order_num}</p>
+                            <p style="text-align:center;margin:0;font-size:${ModelfontSize}px;font-weight:bold;">${record.model}</p>
                             <!-- Add the barcode image here -->
                             <img src="${base64Data}" style="width: 30mm;" alt="Barcode" />
                         </div>
                     </div>
                     <div class="label">
-                        <div class="template">
-                            <h4 style="text-align:center;margin:0;">${record.order_num}</h4>
-                            <p style="text-align:center;margin:0;font-size:14px;font-weight:bold;">${record.brand} ${record.model}</p>
+                        <div class="template" style="text-align:center;">
+                            <p style="text-align:center;margin:0;font-size:10px;font-weight:bold;">Order No: ${record.order_num}</p>
+                            <p style="text-align:center;margin:0;font-size:${ModelfontSize}px;font-weight:bold;">${record.model}</p>
                             <!-- Add the barcode image here -->
-                            <img src="${base64Data}" style="width:100%" alt="Barcode" />
+                            <img src="${base64Data}" style="width: 30mm;" alt="Barcode" />
                         </div>
                     </div>
                 </div>
