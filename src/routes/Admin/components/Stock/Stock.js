@@ -1,10 +1,11 @@
+import './../style.scss';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Table, Input, Space, Popconfirm, message, Button, DatePicker } from 'antd';
 import JsBarcode from "jsbarcode";
 import { downloadBase64File } from "../Purchase/barcodeImage/imageDownload";
 import 'antd/dist/antd.css';
-import { stock, purchase, deleteNotification } from '../../api/api.js';
+import { stock, purchase, deleteNotification, priceInput } from '../../api/api.js';
 import { StockModifyModal } from './Modal/StockModifyModal';
 import { CSVLink } from "react-csv";
 
@@ -46,7 +47,14 @@ export default function Stock() {
         }
       )
     }, [filter, forceRender])
-    
+
+    const [inputValues, setInputValues] = useState(
+      items.reduce((acc, { id, vendor_price }) => {
+        acc[id] = vendor_price;
+        return acc;
+      }, {})
+    );
+
     function handleDelete (key) {
 
       axios.delete(purchase, {
@@ -79,6 +87,30 @@ export default function Stock() {
   
   const updateTable = () => {
     setForceRender(prev => !prev);
+  };
+
+  const handleInputBlur = (e, defaultValue, id) => {
+    const { name, value } = e.target;
+
+    if(defaultValue === value){
+      return;
+    }
+    if(isNaN(value)){
+      message.error('The price should numeric value.');
+      return;
+    }
+
+    const values = {
+      [name]: value,
+      id
+    };
+    
+    axios.patch(priceInput, values)
+      .then((res) => {
+        if(res.status === 200) {
+          message.success('Entry Modified successfully');
+        }
+      })
   };
 
   const columns = [
@@ -129,19 +161,12 @@ export default function Stock() {
       key: 'model',
     },
     {
-      title: 'Box',
+      title: 'Box / Chanrger / Earphone',
       dataIndex: 'box',
       key: 'box',
-    },
-    {
-      title: 'Charger',
-      dataIndex: 'charger',
-      key: 'charger',
-    },
-    {
-      title: 'Earphone',
-      dataIndex: 'earphone',
-      key: 'earphone',
+      render: (box, record, index) => {
+        return `${record.box}/${record.charger}/${record.earphone}`;
+      }
     },
     {
       title: 'Picked By',
@@ -157,6 +182,51 @@ export default function Stock() {
       title: 'Purchase Price',
       dataIndex: 'purchase_price',
       key: 'purchase_price',
+    },
+    {
+      title: 'Vendor Price',
+      dataIndex: 'vendor_price',
+      key: 'vendor_price',
+      render: (text, record, index) => {
+        return(
+          <Input type="text" 
+          id='vendor_price_input' 
+          name="vendor_price"
+          defaultValue={inputValues[record.id]}
+          onBlur={(e) => handleInputBlur(e, record.vendor_price, record.id)}
+          />
+        )
+      },
+      ellipsis: true,
+      width: '250',
+      sorter: (a, b) => {
+        if (a.vendor_price === '' && b.vendor_price === '') {
+          return 0; // Both are empty, no change in order
+        } else if (a.vendor_price === '' || a.vendor_price === null) {
+          return -1; // a is empty, place it first
+        } else if (b.vendor_price === '' || b.vendor_price === null) {
+          return 1; // b is empty, place it first
+        } else {
+          return a.vendor_price - b.vendor_price;
+        }
+      }
+    },
+    {
+      title: 'Retail Price',
+      dataIndex: 'retail_price',
+      key: 'retail_price',
+      render: (text, record, index) => {
+        return(
+          <Input type="text" 
+          id='retail_price_input'
+          defaultValue={text}
+          name="retail_price"
+          onBlur={(e) => handleInputBlur(e, record.retail_price, record.id)} 
+           />
+        )
+      },
+      ellipsis: true,
+      width: '250'
     },
     {
       title: 'Barcode',
@@ -189,9 +259,7 @@ export default function Stock() {
         
         return (
         <Space size="middle">
-          <Popconfirm title="Sure to Modify?" onConfirm={() => handleModify(record)}>
-            <a>Modify</a>
-          </Popconfirm>
+            <a onClick={() => handleModify(record)}>Modify</a>
           <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.order_num)}>
             <a>Delete</a>
           </Popconfirm>

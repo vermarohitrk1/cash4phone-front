@@ -7,6 +7,7 @@ export const StockModifyModal = (props) => {
     <Modal
       title={props.title}
       visible={props.openModifyModal}
+      width={1000}
       footer={null}
       onOk={(value) => props.setOpenModifyModal(false)}
       onCancel={(value) => props.setOpenModifyModal(false)}

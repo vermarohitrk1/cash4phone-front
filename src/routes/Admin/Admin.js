@@ -14,7 +14,8 @@ import Dashboard from './components/Dashboard/Dashboard';
 import Customers from './components/Customers/Customers'
 import CustomerDetails from './components/Customers/CustomerDetials'
 import Payouts from "./components/Payouts/payouts";
-
+import Qoutes from "./components/VendorQuote/Qoutes";
+import QuoteList from "./components/VendorQuote/QouteList/QouteList";
 import Sidebar from "./sidebar/Sidebar";
 
 import {
@@ -52,6 +53,9 @@ function Admin(){
               <Route path={`${match.path}/customers`}>
                 <Customers />
               </Route>
+              <Route path={`${match.path}/vendorQuotes`}>
+                <Qoutes />
+              </Route>
               <Route path={`${match.path}/leads`}>
                 <Leads />
               </Route>
@@ -77,6 +81,7 @@ function Admin(){
                 <Login />
               </Route>
               <Route path={`${match.path}/invoice`} render={(props) => <SaleInvoice {...props}/>} />
+              <Route path={`${match.path}/quoteList`} render={(props) => <QuoteList {...props}/>} />
               <Route path={`${match.path}/sales`}>
                 <Sales />
               </Route>
