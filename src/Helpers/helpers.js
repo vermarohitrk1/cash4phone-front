@@ -51,5 +51,29 @@ const getCurrentDate = () => {
   
     return numberToString(number);
   }
+
+
+  function formatDate(originalDate, format) {
+    const dateObject = new Date(originalDate);
   
-  export {getCurrentDate, convertNumberToString};
+    if (isNaN(dateObject.getTime())) {
+      // Handle invalid date
+      return '';
+    }
+  
+    const year = dateObject.getFullYear();
+    const month = String(dateObject.getMonth() + 1).padStart(2, '0');
+    const day = String(dateObject.getDate()).padStart(2, '0');
+  
+    switch (format) {
+      case 'YYYY-MM-DD':
+        return `${year}-${month}-${day}`;
+      case 'MM/DD/YYYY':
+        return `${month}/${day}/${year}`;
+      // Add more date formats as needed
+      default:
+        return originalDate; // Return the original date if the format is not recognized
+    }
+  }
+
+  export {getCurrentDate, convertNumberToString, formatDate};

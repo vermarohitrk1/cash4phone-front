@@ -1,7 +1,8 @@
-import { Form, Input, Button, Radio, Select, Row, Col, message } from 'antd';
+import { Form, Input, Button, Radio, Checkbox, Select, Row, Col, message } from 'antd';
 import axios from 'axios';
 
 import { purchase, deleteNotification } from '../../../../api/api';
+import { formatDate } from '../../../../../../Helpers/helpers';
 
 const layout = {
   labelCol: {
@@ -24,6 +25,20 @@ const validateMessages = {
   },
 };
 
+const faulty_options = [
+  {label: "Display/Touchpad Issue/Discoloration", value: "A"},
+  {label: "Screen Glass Broken", value: "B"},
+  {label: "Front Camera Not Working Or Faulty", value: "C"},
+  {label: "Volume Button Defect", value: "D"},
+  {label: "Wifi/GPS Not Working", value: "E"},
+  {label: "Power/Home Button Faulty; Hard or Not Working", value: "F"},
+  {label: "Charging Defect", value: "G"}
+];
+const options = [
+  { label: 'Apple', value: 'Apple' },
+  { label: 'Pear', value: 'Pear' },
+  { label: 'Orange', value: 'Orange' },
+];
 
 const StockModifyForm = (props) => {
   const {updateTable} = props;
@@ -37,9 +52,18 @@ const StockModifyForm = (props) => {
     if(!values.imei_num) values.imei_num = props.row.imei_num;
     if(!values.brand) values.brand = props.row.brand;
     if(!values.model) values.model = props.row.model;
+    if(!values.box) values.box = props.row.box;
+    if(!values.charger) values.charger = props.row.charger;
+    if(!values.earphone) values.earphone = props.row.earphone;
+    if(!values.overall_condition) values.overall_condition = props.row.overall_condition;
     if(!values.picked_by) values.picked_by = props.row.picked_by;
     if(!values.purchase_price) values.purchase_price = props.row.purchase_price;
-    
+    if(!values.phone_color) values.phone_color = props.row.phone_color;
+    if(!values.warranty_till) values.warranty_till = props.row.warranty_till;
+    if(!values.grade) values.grade = props.row.grade;
+    if(!values.faults) values.faults = props.row.faults;
+    if(!values.vendor_price) values.vendor_price = props.row.vendor_price;
+    if(!values.retail_price) values.retail_price = props.row.retail_price;
     
     axios.patch(purchase, values)
       .then((res) => {
@@ -161,11 +185,13 @@ const StockModifyForm = (props) => {
         <Col span={12}>
           <Form.Item
             name={['warranty_till']}
-            label="Warranty Till"
+            label="Warranty Till" 
+            initialValue={'20-01-2011'}
           >
-            <Input type='date' defaultValue={props.row.warranty_till} />
+          {/* defaultValue={formatDate(props.row.warranty_till,'YYYY-MM-DD')} */}
+            <Input type='date' />
           </Form.Item>
-        </Col>
+        </Col> 
     </Row>
     
     <Row gutter={16}>
@@ -177,66 +203,41 @@ const StockModifyForm = (props) => {
           <Input defaultValue={props.row.grade} />
         </Form.Item>
         </Col>
+    </Row>
+
+      <Row gutter={16}>
         <Col span={12}>
-          <Form.Item
-            name={['faulty']}
-            label="Faulty"
-          >
-            <Select
-                placeholder="Is Faulty"
-                defaultValue={props.row.faulty}
-              >
-                <Select.Option value="yes">Yes</Select.Option>
-                <Select.Option value="no">No</Select.Option>
-            </Select>
+          <Form.Item name={['box']} label="Box">
+              <Radio.Group defaultValue={props.row.box.toString()}>
+                <Radio value="1">Yes</Radio>
+                <Radio value="0">No</Radio>
+              </Radio.Group>
+          </Form.Item>
+
+          <Form.Item name={['charger']} label="Charger">
+              <Radio.Group defaultValue={props.row.charger.toString()}>
+                <Radio value="1">Yes</Radio>
+                <Radio value="0">No</Radio>
+              </Radio.Group>
+          </Form.Item>
+
+          <Form.Item name={['earphone']} label="Earphone">
+              <Radio.Group defaultValue={props.row.earphone.toString()}>
+                <Radio value="1">Yes</Radio>
+                <Radio value="0">No</Radio>
+              </Radio.Group>
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item name={['faults']} label="Faulty if any" initialValue={props.row.faulty_if_any?.slice(1, -1).split(",").map(item => item.trim())}>
+            <Checkbox.Group options={faulty_options}  />
           </Form.Item>
         </Col>
     </Row>
 
       <Row gutter={16}>
-        <Col span={12}>
-      <Form.Item name={['box']} label="Box" rules={[
-          {
-            required: true,
-          },
-        ]}>
-          <Radio.Group defaultValue={props.row.box.toString()}>
-            <Radio value="1">Yes</Radio>
-            <Radio value="0">No</Radio>
-          </Radio.Group>
-      </Form.Item>
-
-      <Form.Item name={['charger']} label="Charger" rules={[
-          {
-            required: true,
-          },
-        ]}>
-          <Radio.Group defaultValue={props.row.charger.toString()}>
-            <Radio value="1">Yes</Radio>
-            <Radio value="0">No</Radio>
-          </Radio.Group>
-      </Form.Item>
-
-      <Form.Item name={['earphone']} label="Earphone" rules={[
-          {
-            required: true,
-          },
-        ]}>
-          <Radio.Group>
-            <Radio value="1" defaultValue={props.row.earphone.toString()}>Yes</Radio>
-            <Radio value="0">No</Radio>
-          </Radio.Group>
-      </Form.Item>
-      </Col>
-    </Row>
-
-      <Row gutter={16}>
       <Col span={12}>
-        <Form.Item name={['overall_condition']} label="Overall Condition" rules={[
-            {
-              required: true,
-            },
-          ]}>
+        <Form.Item name={['overall_condition']} label="Overall Condition">
             <Radio.Group defaultValue={props.row.overall_condition}>
               <Radio value="A">A</Radio>
               <Radio value="B">B</Radio>

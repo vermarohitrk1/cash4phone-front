@@ -2,9 +2,8 @@ import React, { Component, Fragment } from 'react';
 import {PDFViewer} from '@react-pdf/renderer'
 import Quote from "./reports/Quote";
 
-function QuoteList({quote}) {
-    console.log('this'+quote)
-    const invoice = {
+function QuoteList({location}) {
+    const quoteData = {
         "cashforphone" : [
           {
             "name": "KNOVEDAD PRIVATE LTD",
@@ -17,12 +16,15 @@ function QuoteList({quote}) {
             "email": "info@cashforphone.in",
             "phone": "8800880101"
           }
-        ]
+        ],
+        quote: location.state.quote,
+        items: location.state.phones
     }
+
     return (
         <Fragment>
             <PDFViewer width="1200" height="700" className="salesInvoice" >
-                <Quote quote={quote}/>
+                <Quote quote={quoteData}/>
             </PDFViewer>
         </Fragment>
     )

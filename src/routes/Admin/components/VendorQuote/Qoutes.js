@@ -2,6 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { Table, Button, Space, Input, DatePicker } from 'antd';
 import QuoteModal from './Modal/QuoteModal.js';
+import QuoteEditModal from './Modal/QuoteEditModal.js';
 import { Redirect } from "react-router-dom";
 import 'antd/dist/antd.css';
 import { quoteItems, getQuotes } from '../../api/api.js';
@@ -14,6 +15,7 @@ const { RangePicker } = DatePicker;
 export default function Qoutes() {
   const [loading, setLoading] = useState(true);
   const [openModal, setopenModal] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
   const [items, setItems] = useState([]);
   const [openQuote, setOpenQuote] = useState(false);
   const [quoteData, setQuoteData] = useState({hello: "world"});
@@ -44,6 +46,7 @@ export default function Qoutes() {
   }
 
   function handleModify(rowValues) {
+    setOpenEditModal(true);
   }
 
   const updateTable = () => {
@@ -112,6 +115,14 @@ const columns = [
               openModal={openModal}
               setopenModal={(value) => setopenModal(value)}
               title={"Quote Entry"}
+              updateTable={updateTable} 
+          />
+      }
+      {openEditModal && 
+          <QuoteEditModal
+              openEditModal={openEditModal}
+              setOpenEditModal={(value) => setOpenEditModal(value)}
+              title={"Update Quote Entry"}
               updateTable={updateTable} 
           />
       }
