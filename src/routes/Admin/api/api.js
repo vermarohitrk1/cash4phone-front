@@ -30,6 +30,7 @@ export const priceInput          = process.env.REACT_APP_API_URL+"admin/stockPri
 export const quote               = process.env.REACT_APP_API_URL+"admin/create-vendor-quote";
 export const getQuotes           = process.env.REACT_APP_API_URL+"admin/get-quotes";
 export const quoteItems          = process.env.REACT_APP_API_URL+"admin/get-quote-items";
+export const updateQuoteItems    = process.env.REACT_APP_API_URL+"admin/update-quote-items";
 
 // keep last api in comment while in local also. it will keep sending msgs whenever you delete stock entries.
 

@@ -4,7 +4,9 @@ import { Form, Input, Button, Space, Select, Row, Col, message, Typography } fro
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { getCurrentDate, convertNumberToString } from '../../../../../Helpers/helpers';
 import axios from 'axios';
-import { quote, GET_customers, stock } from '../../../api/api';
+import moment from 'moment';
+import { formatDate } from '../../../../../Helpers/helpers';
+import { quote, updateQuoteItems, stock } from '../../../api/api';
 const { Text } = Typography;
 
 const layout = {
@@ -29,34 +31,35 @@ const validateMessages = {
 };
 
 const QuoteEditForm = (props) => {
-  const { phones, updateSales } = props;
+  const { phones, updateTable } = props;
 
   const [form] = Form.useForm();
   const [products, setProducts] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [formValues, setFormValues] = useState({
-    vendor_name: '',
-    vendor_phone: '',
-    vendor_email: '',
-    vendor_address: '',
-    city: '',
-    state: '',
+    
   });
 
   const onFinish = (values) => {
     
     setIsSubmitting(true);
-    const updatedFormValues = {
-      ...formValues,
-      ...values,
-    };
-
-    axios.post(quote, updatedFormValues).then((res) =>{ 
+    // const updatedFormValues = {
+    //   ...formValues,
+    //   ...values,
+    // };
+    const convertedPayload = { offer_price: {} };
+    Object.keys(values).forEach((key) => {
+      const name = key.split('_')[0]+'_'+key.split('_')[1];
+      const id = key.split('_')[2];
+      const value = values[key];
+      convertedPayload['offer_price'][id] = value;
+    });
+    axios.patch(updateQuoteItems, convertedPayload).then((res) =>{ 
       // console.log(res.status)
-      props.setopenModal(false);
-      updateSales();
-      message.success('Qutoe created succesfully.');
+      props.setOpenEditModal(false);
+      updateTable();
+      message.success('Qutoe item updated succesfully.');
       setIsSubmitting(false);
     }).catch((error) => {
       if(error.response && error.response.status === 422 ){
@@ -87,19 +90,75 @@ const QuoteEditForm = (props) => {
       // autoComplete="off"
       initialValues={formValues}
     >
-              
+        <Row gutter={16}>
+          <Col span={4} style={{textAlign: 'center'}}>
+              <Text>Order Number</Text>
+          </Col>
+          <Col span={6} style={{textAlign: 'center'}}>
+              <Text>Model</Text>
+          </Col>
+          <Col span={2} style={{textAlign: 'center'}}>
+              <Text>Grade</Text>
+          </Col>
+          <Col span={4} style={{textAlign: 'center'}}>
+              <Text>Warranty Till</Text>
+          </Col>
+          <Col span={4} style={{textAlign: 'center'}}>
+              <Text>Vendor Price</Text>
+          </Col>
+          <Col span={4} style={{textAlign: 'center'}}>
+              <Text>Offer Price</Text>
+          </Col>
+        </Row>
       {phones.map((phone) => (   
-        <Form.Item
-          key={phone.purchase_id}
-          label={phone.model}
-          name={['products', phone.purchase_id, 'price']}
-          initialValue={phone.vendore_price} 
-        >
-          <Input
-            placeholder="Enter Offer Price"
-            style={{ width: '200px' }}
-          />
-        </Form.Item>
+        <Row gutter={16}>
+          <Col span={4} style={{textAlign: 'center'}}>
+            <Input
+              placeholder=""
+              defaultValue={phone.order_num} 
+              disabled
+            />
+          </Col>
+          <Col span={6} style={{textAlign: 'center'}}>
+            <Input
+              placeholder=""
+              defaultValue={phone.model} 
+              disabled
+            />
+          </Col>
+          <Col span={2} style={{textAlign: 'center'}}>
+            <Input
+              placeholder=""
+              defaultValue={phone.overall_condition} 
+              disabled
+            />
+          </Col>
+          <Col span={4} style={{textAlign: 'center'}}>
+            <Input
+              placeholder=""
+              defaultValue={formatDate(phone.warranty_till, 'YYYY-MM-DD')} 
+              disabled
+            />
+          </Col>
+          <Col span={4} style={{textAlign: 'center'}}>
+            <Input
+              placeholder=""
+              defaultValue={phone.vendor_price} 
+              disabled
+            />
+          </Col>
+          <Col span={4} style={{textAlign: 'center'}}>
+            <Form.Item
+              key={phone.id}
+              name={['offer_price_'+phone.id]}
+              initialValue={phone.offer_price} 
+            >
+              <Input
+                placeholder="Enter Offer Price"
+              />
+            </Form.Item>
+          </Col>
+        </Row>
       ))}
     
     <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 20 }}>

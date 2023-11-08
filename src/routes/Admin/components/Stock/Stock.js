@@ -39,6 +39,7 @@ export default function Stock() {
         (res) => {
           setLoading(false);
           const result = res.data
+          console.log(result)
           setItems(result);
         },
         (error) => {
@@ -48,12 +49,6 @@ export default function Stock() {
       )
     }, [filter, forceRender])
 
-    const [inputValues, setInputValues] = useState(
-      items.reduce((acc, { id, vendor_price }) => {
-        acc[id] = vendor_price;
-        return acc;
-      }, {})
-    );
 
     function handleDelete (key) {
 
@@ -187,46 +182,27 @@ export default function Stock() {
       title: 'Vendor Price',
       dataIndex: 'vendor_price',
       key: 'vendor_price',
-      render: (text, record, index) => {
-        return(
-          <Input type="text" 
-          id='vendor_price_input' 
-          name="vendor_price"
-          defaultValue={inputValues[record.id]}
-          onBlur={(e) => handleInputBlur(e, record.vendor_price, record.id)}
-          />
-        )
-      },
-      ellipsis: true,
-      width: '250',
       sorter: (a, b) => {
-        if (a.vendor_price === '' && b.vendor_price === '') {
-          return 0; // Both are empty, no change in order
-        } else if (a.vendor_price === '' || a.vendor_price === null) {
-          return -1; // a is empty, place it first
-        } else if (b.vendor_price === '' || b.vendor_price === null) {
-          return 1; // b is empty, place it first
-        } else {
-          return a.vendor_price - b.vendor_price;
-        }
-      }
+        // Handle undefined or empty values
+        const aValue = typeof a.vendor_price === 'number' ? a.vendor_price : 0;
+        const bValue = typeof b.vendor_price === 'number' ? b.vendor_price : 0;
+  
+        return aValue - bValue;
+      },
+      sortDirections: ['descend', 'ascend'],
     },
     {
       title: 'Retail Price',
       dataIndex: 'retail_price',
       key: 'retail_price',
-      render: (text, record, index) => {
-        return(
-          <Input type="text" 
-          id='retail_price_input'
-          defaultValue={text}
-          name="retail_price"
-          onBlur={(e) => handleInputBlur(e, record.retail_price, record.id)} 
-           />
-        )
+      sorter: (a, b) => {
+        // Handle undefined or empty values
+        const aValue = typeof a.retail_price === 'number' ? a.retail_price : 0;
+        const bValue = typeof b.retail_price === 'number' ? b.retail_price : 0;
+  
+        return aValue - bValue;
       },
-      ellipsis: true,
-      width: '250'
+      sortDirections: ['descend', 'ascend'],
     },
     {
       title: 'Barcode',

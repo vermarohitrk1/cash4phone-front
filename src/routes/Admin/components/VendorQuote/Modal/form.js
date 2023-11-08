@@ -94,6 +94,7 @@ const QuoteForm = (props) => {
         }
         return phone;
       });
+      console.log(updatedPhones)
       form.setFieldsValue({ phones: updatedPhones });
   }
   
@@ -112,42 +113,7 @@ const QuoteForm = (props) => {
     }
   };
 
-  const handlePaymentChange = (event) => {
-    const paymentAmount = event.target.value;
-    const paymentWords = convertNumberToString(paymentAmount);
-    
-    form.setFieldsValue({
-      payment_words: paymentWords || '',
-    })
-    const isInvalidAmount = paymentAmount < totalPrice;
-    form.setFields([
-      {
-        name: 'selling_amount',
-        errors: isInvalidAmount ? ['Total amount is less then total price.'] : [],
-      },
-    ]);
-  };
 
-  const handleBack = () => {
-    setStep((prevStep) => prevStep - 1);
-  };
-
-  const handleNext = async () => {
-    // await form.validateFields();
-    // setStep((prevStep) => prevStep + 1);
-    await form
-    .validateFields()
-    .then((values) => {
-      setFormValues((prevValues) => ({
-        ...prevValues,
-        ...values,
-      }));
-      setStep((prevStep) => prevStep + 1);
-    })
-    .catch((error) => {
-      // Handle validation errors
-    });
-  };
 
   useEffect(() => {
     // Fetch customer phones from the API
@@ -173,20 +139,6 @@ const QuoteForm = (props) => {
     fetchProducts();
     fetchCustomers();
   }, []);
-
-  const validateSellingAmount = (rule, value) => {
-    const paymentCash = form.getFieldValue('payment_cash') || 0;
-    const paymentCard = form.getFieldValue('payment_card') || 0;
-    const paymentTransfer = form.getFieldValue('payment_transfer') || 0;
-    const discount = form.getFieldValue('discount') || 0;
-
-    const calculatedTotal = parseInt(paymentCash) +  parseInt(paymentCard) +  parseInt(paymentTransfer) +  parseInt(discount);
-
-    if (calculatedTotal !== parseInt(value) || value < totalPrice) {
-      return Promise.reject('Total payment must equal the sum of above payments and not less than Total Amount');
-    }
-    return Promise.resolve();
-  };
 
 
   const handleSearch = (value, name) => {
