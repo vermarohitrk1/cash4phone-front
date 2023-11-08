@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 const getCurrentDate = () => {
     const currentDate = new Date();
     const year = currentDate.getFullYear();

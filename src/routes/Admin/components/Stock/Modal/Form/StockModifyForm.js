@@ -1,6 +1,6 @@
-import { Form, Input, Button, Radio, Checkbox, Select, Row, Col, message } from 'antd';
+import { Form, Input, Button, Radio, Checkbox, DatePicker, Select, Row, Col, message } from 'antd';
 import axios from 'axios';
-
+import moment from 'moment';
 import { purchase, deleteNotification } from '../../../../api/api';
 import { formatDate } from '../../../../../../Helpers/helpers';
 
@@ -60,7 +60,6 @@ const StockModifyForm = (props) => {
     if(!values.purchase_price) values.purchase_price = props.row.purchase_price;
     if(!values.phone_color) values.phone_color = props.row.phone_color;
     if(!values.warranty_till) values.warranty_till = props.row.warranty_till;
-    if(!values.grade) values.grade = props.row.grade;
     if(!values.faults) values.faults = props.row.faults;
     if(!values.vendor_price) values.vendor_price = props.row.vendor_price;
     if(!values.retail_price) values.retail_price = props.row.retail_price;
@@ -186,27 +185,17 @@ const StockModifyForm = (props) => {
           <Form.Item
             name={['warranty_till']}
             label="Warranty Till" 
-            initialValue={'20-01-2011'}
+            initialValue={moment(props.row.warranty_till, 'YYYY-MM-DD')}
           >
           {/* defaultValue={formatDate(props.row.warranty_till,'YYYY-MM-DD')} */}
-            <Input type='date' />
+            {/* <Input type='date' format={'YYYY-MM-DD'} /> */}
+            <DatePicker style={{width:'100%'}} />
           </Form.Item>
         </Col> 
     </Row>
-    
-    <Row gutter={16}>
-      <Col span={12}>
-        <Form.Item
-          name={['grade']}
-          label="Grade"
-        >
-          <Input defaultValue={props.row.grade} />
-        </Form.Item>
-        </Col>
-    </Row>
 
       <Row gutter={16}>
-        <Col span={12}>
+        <Col span={8}>
           <Form.Item name={['box']} label="Box">
               <Radio.Group defaultValue={props.row.box.toString()}>
                 <Radio value="1">Yes</Radio>
@@ -228,7 +217,7 @@ const StockModifyForm = (props) => {
               </Radio.Group>
           </Form.Item>
         </Col>
-        <Col span={12}>
+        <Col span={16}>
           <Form.Item name={['faults']} label="Faulty if any" initialValue={props.row.faulty_if_any?.slice(1, -1).split(",").map(item => item.trim())}>
             <Checkbox.Group options={faulty_options}  />
           </Form.Item>

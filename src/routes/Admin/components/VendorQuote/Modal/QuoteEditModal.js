@@ -3,7 +3,7 @@ import { Modal } from 'antd';
 import {QuoteEditForm } from './editForm';
 
 const QuoteEditModal = (props) => {
-  const { updateTable } = props;
+  const { updateTable, phones } = props;
   
   return (
     <Modal
@@ -15,7 +15,7 @@ const QuoteEditModal = (props) => {
       width={1000}
       footer={null}
     >
-      <QuoteEditForm setOpenEditModal={props.setOpenEditModal} updateTable={updateTable}/>
+      <QuoteEditForm setOpenEditModal={props.setOpenEditModal} phones={phones} updateTable={updateTable}/>
       
     </Modal>
   );

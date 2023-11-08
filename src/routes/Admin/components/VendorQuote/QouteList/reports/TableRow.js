@@ -76,7 +76,12 @@ const TableRow = ({items}) => {
             <Text style={styles.color}>{item.phone_color || '-'}</Text>
             <Text style={styles.grade}>{item.grade || '-'}</Text>
             <Text style={styles.warranty}>{item.warranty_till || '-'}</Text>
-            <Text style={styles.faulty}>{item.faulty_if_any || 'No'}</Text>
+            {/* <Text style={styles.faulty}>{(item.faulty_if_any || ['No']).split(',').join('\n')}</Text> */}
+            <Text style={styles.faulty}>
+                {Array.isArray(item.faulty_if_any) 
+                    ? item.faulty_if_any.join('\n') 
+                    : item.faulty_if_any || 'No'}
+            </Text>
         </View>
     )
     return (<Fragment>{rows}</Fragment> )

@@ -17,6 +17,7 @@ export default function Qoutes() {
   const [openModal, setopenModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [items, setItems] = useState([]);
+  const [phones, setPhones] = useState([]);
   const [openQuote, setOpenQuote] = useState(false);
   const [quoteData, setQuoteData] = useState({hello: "world"});
   const [forceRender, setForceRender] = useState(false);
@@ -45,8 +46,16 @@ export default function Qoutes() {
     })
   }
 
-  function handleModify(rowValues) {
-    setOpenEditModal(true);
+  function handleModify(record) {
+    
+    axios.get(quoteItems, {
+      params: {quote_id: record.id}
+    }).then(res => {
+      let data = { quote: record, phones: res.data}
+      setPhones(res.data);
+      console.log(phones)
+      setOpenEditModal(true);
+    })
   }
 
   const updateTable = () => {
@@ -124,6 +133,7 @@ const columns = [
               setOpenEditModal={(value) => setOpenEditModal(value)}
               title={"Update Quote Entry"}
               updateTable={updateTable} 
+              phones={phones}
           />
       }
       <Table 
