@@ -185,7 +185,7 @@ const StockModifyForm = (props) => {
           <Form.Item
             name={['warranty_till']}
             label="Warranty Till" 
-            initialValue={moment(props.row.warranty_till, 'YYYY-MM-DD')}
+            initialValue={props.row.warranty_till && moment(props.row.warranty_till, 'YYYY-MM-DD')}
           >
           {/* defaultValue={formatDate(props.row.warranty_till,'YYYY-MM-DD')} */}
             {/* <Input type='date' format={'YYYY-MM-DD'} /> */}
