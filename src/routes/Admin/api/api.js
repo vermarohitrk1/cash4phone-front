@@ -5,7 +5,7 @@ dotenv.config();
 
 export const sales               = process.env.REACT_APP_API_URL+"admin/sales";
 export const sales_update        = process.env.REACT_APP_API_URL+"admin/sales_update";
-export const purchase            = process.env.REACT_APP_API_URL+"admin/purchase";
+export const purchase            = process.env.REACT_APP_API_URL+"admin/purchase2";
 export const stock               = process.env.REACT_APP_API_URL+"admin/stock";
 export const phones              = process.env.REACT_APP_API_URL+"admin/phones";
 export const searchPhones        = process.env.REACT_APP_API_URL+"admin/searchPhones";

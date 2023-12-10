@@ -71,8 +71,8 @@ const TableRow = ({items}) => {
         <View style={styles.row} key={item.sno.toString()}>
             <Text style={styles.order}>{item.order_num}</Text>
             <Text style={styles.model}>{item.model}</Text>
-            <Text style={styles.sell}>{item.vendor_price || 0}</Text>
-            <Text style={styles.offer}>{item.offer_price || '-'}</Text>
+            <Text style={styles.sell}>{item.vendor_price || ' '}</Text>
+            <Text style={styles.offer}>{item.offer_price || ' '}</Text>
             <Text style={styles.color}>{item.phone_color || '-'}</Text>
             <Text style={styles.grade}>{item.grade || '-'}</Text>
             <Text style={styles.warranty}>{item.warranty_till || '-'}</Text>
