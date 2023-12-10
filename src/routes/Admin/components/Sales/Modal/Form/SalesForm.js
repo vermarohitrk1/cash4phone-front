@@ -5,6 +5,7 @@ import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { getCurrentDate, convertNumberToString } from '../../../../../../Helpers/helpers';
 import axios from 'axios';
 import { sales, GET_customers, sales_update, purchase, stock } from '../../../../api/api';
+import { states } from '../../../../../../constants/states';
 const { Text } = Typography;
 
 const layout = {
@@ -210,6 +211,7 @@ const SalesForm = (props) => {
   };
 
   useEffect(() => {
+    
     // Fetch customer phones from the API
     const fetchCustomers = async () => {
       try {
@@ -433,8 +435,30 @@ const SalesForm = (props) => {
           >
             <Input />
           </Form.Item>
-
+          
           <Form.Item
+            name={['state_code']}
+            label="State"
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+          <Select
+              showSearch
+              placeholder="State"
+              optionFilterProp="children"
+            >
+              {Object.entries(states).map(([code, state]) => (
+                <Select.Option key={code} value={code}>
+                  {state+'-'+code}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+
+          {/* <Form.Item
             name={['supply_place']}
             label="Place of Supply"
             rules={[
@@ -456,7 +480,7 @@ const SalesForm = (props) => {
             ]}
           >
             <Input type="number" />
-          </Form.Item>
+          </Form.Item> */}
 
           <Form.Item
             name={['shipping_address']}
@@ -740,8 +764,32 @@ const SalesEditForm = (props) => {
       <Input  defaultValue={props.row.buyer_name}/>
         </Form.Item>
     
+    
+        <Form.Item
+            name={['state_code']}
+            label="State"
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+            initialValue={String(props.row.state_code)}
+          >
+          <Select
+              showSearch
+              placeholder="State"
+              optionFilterProp="children"
+            >
+              {Object.entries(states).map(([code, state]) => (
+                <Select.Option key={code} value={code}>
+                  {state+'-'+code}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+
   
-        <Form.Item name={['supply_place']} label="Place of Supply" 
+        {/* <Form.Item name={['supply_place']} label="Place of Supply" 
           >
           <Input defaultValue={props.row.supply_place}/>
         </Form.Item>
@@ -749,7 +797,7 @@ const SalesEditForm = (props) => {
         <Form.Item name={['state_code']} label="State Code" 
           >
           <Input defaultValue={props.row.state_code}/>
-        </Form.Item>
+        </Form.Item> */}
   
         <Form.Item name={['billing_address']} label="Billing Address">
           <Input defaultValue={props.row.billing_address}/>
