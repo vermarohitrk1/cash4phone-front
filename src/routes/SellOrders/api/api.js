@@ -8,8 +8,8 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // Prod
-export const sellorders = process.env.REACT_APP_API_URL+"/sellorders";
-export const sendOTP    = process.env.REACT_APP_API_URL+"/sellorders/sendOTP";
-export const verifyOTP  = process.env.REACT_APP_API_URL+"/sellorders/verifyOTP";
-export const refresh    = process.env.REACT_APP_API_URL+"/sellorders/refresh";
-export const logout     = process.env.REACT_APP_API_URL+"/sellorders/logout";
+export const sellorders = process.env.REACT_APP_API_URL+"sellorders";
+export const sendOTP    = process.env.REACT_APP_API_URL+"sellorders/sendOTP";
+export const verifyOTP  = process.env.REACT_APP_API_URL+"sellorders/verifyOTP";
+export const refresh    = process.env.REACT_APP_API_URL+"sellorders/refresh";
+export const logout     = process.env.REACT_APP_API_URL+"sellorders/logout";
