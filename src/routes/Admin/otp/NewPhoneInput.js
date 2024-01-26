@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from './styles/style.module.css';
 import axios from 'axios';
+import { message } from 'antd';
 import { login } from '../api/api';
 
 function NewPhoneInput(props) {
@@ -16,8 +17,14 @@ function NewPhoneInput(props) {
 			})
 			.then(function(res) {
 				console.log(res.data);
-				window.location.reload();
 
+				if(res?.data?.auth == false){
+					console.log(res)
+					message.error(res.data.message)
+				}else{
+					window.location.reload();
+				}
+				
 				// const hash = res.data.hash;
 				// hashHandleChange(hash);
 			});

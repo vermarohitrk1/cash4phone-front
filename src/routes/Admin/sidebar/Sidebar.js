@@ -31,7 +31,7 @@ export default function Sidebar() {
 			.get(logoutapp)
 			.then((res) => {
 				console.log(res.data);
-		    //window.location.reload();
+		    window.location.reload();
 
 			})
 			.catch((err) => {
