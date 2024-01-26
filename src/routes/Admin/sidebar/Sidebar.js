@@ -97,10 +97,10 @@ export default function Sidebar() {
                 <Link to="/admin/orders">Orders</Link>
               </Menu.Item>
               <hr />
-              <Menu.Item key="7" icon={<UploadOutlined />}>
+              {/* <Menu.Item key="7" icon={<UploadOutlined />}>
                 <Link to="/admin/leads">All Leads</Link>
               </Menu.Item>
-              <hr />
+              <hr /> */}
               <Menu.Item key="11" icon={<LogoutOutlined />}>
               <Link to="/admin" onClick={logout}>Logout</Link>
               </Menu.Item>
