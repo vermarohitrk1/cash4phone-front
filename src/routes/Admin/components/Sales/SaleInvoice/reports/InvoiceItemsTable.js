@@ -7,6 +7,8 @@ import InvoiceTableFooter from './InvoiceTableFooter';
 import InvoiceRowTowCol from './InvoiceRowTowCol';
 import TaxHeader from './TaxHeader';
 import Total from './Total';
+import dotenv from "dotenv";
+dotenv.config();
 
 const styles = StyleSheet.create({
     tableContainer: {
@@ -22,7 +24,8 @@ const styles = StyleSheet.create({
   const InvoiceItemsTable = ({invoice}) => {
     let ncr = false;
     let roi = false;
-    if(invoice.state_code == 7) {
+  
+    if(invoice.state_code == parseInt(process.env.REACT_APP_COMPANY_STATECODE)) {
       ncr = true;
     } else {
       roi = true;

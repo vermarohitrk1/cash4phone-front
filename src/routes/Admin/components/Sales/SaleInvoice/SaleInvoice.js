@@ -2,10 +2,12 @@ import React, { Component, Fragment } from 'react';
 import {PDFViewer} from '@react-pdf/renderer'
 import Invoice from "./reports/Invoice";
 import './SalesInvoice.css';
+import dotenv from "dotenv";
+dotenv.config();
 
 function SaleInvoice({location}) {
     let sale = location.state.invoice;
-console.log(sale)
+
     const invoice = {
         "invoice_number": sale.invoice_number,
         "sale_date": sale.sale_date.slice(0,10),
@@ -32,15 +34,15 @@ console.log(sale)
     
         "cashforphone" : [
           {
-            "name": "KNOVEDAD PRIVATE LTD",
-            "cin": "U74999DL2018PTC330914",
-            "gstin": "07AAHCK0065B1Z0",
-            "state_code": "07",
+            "name": process.env.REACT_APP_COMPANY_NAME,
+            "cin": process.env.REACT_APP_COMPANY_CIN,
+            "gstin": process.env.REACT_APP_COMPANY_GSTIN,
+            "state_code": process.env.REACT_APP_COMPANY_STATECODE,
             "corporate_address": "Corporate Address",
-            "registered_address": "K22 basement, lajpat nagar, near vijay sales Pincode 110024",
+            "registered_address": process.env.REACT_APP_COMPANY_ADDRESS,
             "website": "www.cashforphone.in",
             "email": "info@cashforphone.in",
-            "phone": "8800880101"
+            "phone": process.env.REACT_APP_COMPANY_PHONE
           }
         ],
         "items": location.state.phones
