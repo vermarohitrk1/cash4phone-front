@@ -43,14 +43,29 @@ export default function Sales() {
       result.forEach(element => {
         element['key'] = element.invoice_number;
         element.sale_date = element.sale_date.slice(0, 10);
-        if(element.sale_date <= '2022-03-31') {
-          element.invoice_number_unique = element.invoice_number;
-          element.invoice_number = "KNOV/2022-23/" + element.invoice_number;
-        } else {
-          element.invoice_number_unique = element.invoice_number;
-          element.invoice_number = "KNOV/2023-24/" + element.invoice_number;
+        // if(element.sale_date <= '2022-03-31') {
+        //   element.invoice_number_unique = element.invoice_number;
+        //   element.invoice_number = "KNOV/2022-23/" + element.invoice_number;
+        // } else {
+        //   element.invoice_number_unique = element.invoice_number;
+        //   element.invoice_number = "KNOV/2023-24/" + element.invoice_number;
+        // }
+        const saleDate = new Date(element.sale_date);
+        let fiscalYearStart, fiscalYearEnd;
 
+        if (saleDate.getMonth() <= 2 && saleDate.getDate() <= 31) {
+          fiscalYearStart = saleDate.getFullYear() - 1;
+          fiscalYearEnd = saleDate.getFullYear();
+        } else {
+          fiscalYearStart = saleDate.getFullYear();
+          fiscalYearEnd = saleDate.getFullYear() + 1;
         }
+
+        const fiscalYear = `${fiscalYearStart}-${fiscalYearEnd.toString().slice(-2)}`;
+
+        element.invoice_number_unique = element.invoice_number;
+        element.invoice_number = `KNOV/${fiscalYear}/` + element.invoice_number;
+        
       });
       setItems(result);
     });
@@ -58,7 +73,7 @@ export default function Sales() {
 
   const onSearch = (params) => {
     var params = {...filter, ...params}
-    console.log(params)
+    // console.log(params)
     setFilter(params)
   }
 
@@ -68,7 +83,7 @@ export default function Sales() {
       params: {invoice_number: record.invoice_number.slice(13)}
     }).then(res => {
       let data = { invoice: record, phones: res.data}
-      console.log(data)
+      // console.log(data)
       setInvoiceData(data);
       setOpenInvoice(true);
     })
